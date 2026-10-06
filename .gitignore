@@ -1,7 +1,13 @@
-# Target/Output mapper (Kompilerede filer)
-/bin/
-/target/
-*.class
-
-# Eclipse-specifikke metadata
-.metadata/
+.settings/
+bin/
+tmp/
+.metadata
+.classpath
+.project
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.loadpath
+.factorypath
