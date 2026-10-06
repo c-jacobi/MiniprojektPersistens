@@ -9,4 +9,4 @@
 !README.md
 
 # Allow directory traversal so .java files in subdirectories are included
-!*/
+!**/
