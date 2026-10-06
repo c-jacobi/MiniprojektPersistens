@@ -1,6 +1,6 @@
 package model;
 
-public class Customer {
+public class Customer {//helloooo
 
 	public Customer() {
 		super();
