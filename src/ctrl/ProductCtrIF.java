@@ -1,5 +1,19 @@
 package ctrl;
 
-public interface ProductCtrIF {
+import java.util.List;
 
+import db.DataAccessException;
+import model.Product;
+
+public interface ProductCtrIF {
+	
+	List<Product> findAll() throws DataAccessException;
+
+	Product findByProductNumber(int ProductNumber) throws DataAccessException;
+	
+	
+
+	
 }
+
+
