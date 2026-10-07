@@ -9,7 +9,7 @@ public class Customer {
 	private int zipcode;
 	private String city;
 	private String email;
-	private String phoneNo;
+	private String phone;
 	private String customerType;
 
 	
@@ -22,7 +22,7 @@ public class Customer {
 		this.zipcode= zipcode;
 		this.city = city;
 		this.email = email;
-		this.phoneNo = phoneNo;
+		this.phone = phoneNo;
 		this.customerType = customerType;
 		
 	}
@@ -72,8 +72,8 @@ public class Customer {
 
 
 
-	public String getPhoneNo() {
-		return phoneNo;
+	public String getPhone() {
+		return phone;
 	}
 
 
@@ -128,8 +128,8 @@ public class Customer {
 
 
 
-	public void setPhoneNo(String phoneNo) {
-		this.phoneNo = phoneNo;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 

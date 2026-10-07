@@ -9,7 +9,7 @@ import java.util.List;
 import model.Customer;
 
 public class CustomerDB implements CustomerDAO {
-	private static final String SELECT_ALL_Q = "select name, address, zipcode, city, email, phoneno, type from employee";
+	private static final String SELECT_ALL_Q = "select name, address, zipcode, city, email, phoneno, type from customers";
 	private static final String FIND_BY_PHONE = SELECT_ALL_Q + " where phoneno = ?";
 	private static final String FIND_BY_EMAIL = SELECT_ALL_Q + " where email = ?";
 
@@ -81,7 +81,7 @@ public class CustomerDB implements CustomerDAO {
 						rs.getString("customerType"));
 			}
 		} catch (SQLException e) {
-			throw new DataAccessException("Could not read result set for customer", e);
+			throw new DataAccessException("Could not read result set for customers.", e);
 		}
 
 		return c;
