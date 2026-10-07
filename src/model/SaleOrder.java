@@ -1,23 +1,22 @@
 package model;
 
+import java.time.LocalDate;
+
 public class SaleOrder {
 
 	private int orderNo;
-	private String datetime;
-	private Boolean deliveryStatus;
-	private String deliveryTime;
+	private LocalDate date;
+	private String deliveryStatus;
+	private LocalDate deliveryDate;
 	private int discountGiven;
-	private int invoiceId;
 
-	public SaleOrder(int orderNo, String datetime, Boolean deliveryStatus, String deliveryTime, int discountGiven,
-			int invoiceId) {
+	public SaleOrder(int orderNo, LocalDate date, String deliveryStatus, LocalDate deliveryDate, int discountGiven) {
 		super();
 		this.orderNo = orderNo;
-		this.datetime = datetime;
+		this.date = date;
 		this.deliveryStatus = deliveryStatus;
-		this.deliveryTime = deliveryTime;
+		this.deliveryDate = deliveryDate;
 		this.discountGiven = discountGiven;
-		this.invoiceId = invoiceId;
 	}
 
 	public int getOrderNo() {
@@ -28,28 +27,28 @@ public class SaleOrder {
 		this.orderNo = orderNo;
 	}
 
-	public String getDatetime() {
-		return datetime;
+	public LocalDate getDate() {
+		return date;
 	}
 
-	public void setDatetime(String datetime) {
-		this.datetime = datetime;
+	public void setDate(LocalDate date) {
+		this.date = date;
 	}
 
-	public Boolean getDeliveryStatus() {
+	public String getDeliveryStatus() {
 		return deliveryStatus;
 	}
 
-	public void setDeliveryStatus(Boolean deliveryStatus) {
+	public void setDeliveryStatus(String deliveryStatus) {
 		this.deliveryStatus = deliveryStatus;
 	}
 
-	public String getDeliveryTime() {
-		return deliveryTime;
+	public LocalDate getDeliveryDate() {
+		return deliveryDate;
 	}
 
-	public void setDeliveryTime(String deliveryTime) {
-		this.deliveryTime = deliveryTime;
+	public void setDeliveryTime(LocalDate deliveryDate) {
+		this.deliveryDate = deliveryDate;
 	}
 
 	public int getDiscountGiven() {
@@ -60,11 +59,4 @@ public class SaleOrder {
 		this.discountGiven = discountGiven;
 	}
 
-	public int getInvoiceId() {
-		return invoiceId;
-	}
-
-	public void setInvoiceId(int invoiceId) {
-		this.invoiceId = invoiceId;
-	}
 }
