@@ -31,7 +31,7 @@ public class ProductDB implements ProductDAO {
 			List<Product> res = buildObjects(rs);
 			return res;
 		} catch (SQLException e) {
-			throw new DataAccessException("Could not retrieve all customers.", e);
+			throw new DataAccessException("Could not retrieve all products.", e);
 		}
 	}
 
@@ -43,7 +43,7 @@ public class ProductDB implements ProductDAO {
 			Product res = buildObject(rs);
 			return res;
 		} catch (SQLException e) {
-			throw new DataAccessException("Could not find customer by this phone number.", e);
+			throw new DataAccessException("Could not find product by this product number.", e);
 		}
 	}
 
