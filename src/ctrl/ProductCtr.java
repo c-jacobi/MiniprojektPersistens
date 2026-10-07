@@ -6,17 +6,17 @@ import db.ProductDB;
 import model.Product;
 
 public class ProductCtr  implements ProductCtrIF{
+	private ProductDB productDB; 
 
 	@Override
 	public List<Product> findAll() throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
+		return productDB.findAll();
 	}
 
 	@Override
 	public Product findByProductNumber(int ProductNumber) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
+		return productDB.findByProductNumber(ProductNumber);
+		
 	}
 
 }

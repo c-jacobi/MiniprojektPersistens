@@ -36,9 +36,9 @@ public class ProductDB implements ProductDAO {
 	}
 
 	@Override
-	public Product findByProductNumber(String productNumber) throws DataAccessException {
+	public Product findByProductNumber(int productNumber) throws DataAccessException {
 		try {
-			findByProductNumber.setString(1, productNumber);
+			findByProductNumber.setInt(1, productNumber);
 			ResultSet rs = findByProductNumber.executeQuery();
 			Product res = buildObject(rs);
 			return res;

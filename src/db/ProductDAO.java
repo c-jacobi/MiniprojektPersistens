@@ -7,6 +7,6 @@ import model.Product;
 public interface ProductDAO {
 	List<Product> findAll() throws DataAccessException;
 
-	Product findByProductNumber(String productNumber) throws DataAccessException;
+	Product findByProductNumber(int productNumber) throws DataAccessException;
 
 }
