@@ -13,5 +13,5 @@ public interface SaleOrderCtrIF {
 	
 	Order findByPhone(String phone) throws DataAccessException;
 	
-	Order findEmail(String email) throws DataAccessException;
+	Order findEmail(String email) throws DataAccessException; 
 }
