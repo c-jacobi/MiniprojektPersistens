@@ -1,18 +1,19 @@
 package model;
 
 public class Product {
-	
+
 	private int productNumber;
 	private String name;
 	private int minStock;
 	private int reservedStock;
 
 	public Product (int productNumber, String name, int minStock, int reservedStock) {
+		super();
 		this.productNumber = productNumber;
 		this.name = name;
 		this.minStock = minStock;
 		this.reservedStock= reservedStock;
-}
+	}
 
 	public int getProductNumber() {
 		return productNumber;
@@ -45,5 +46,4 @@ public class Product {
 	public void setReservedStock(int reservedStock) {
 		this.reservedStock = reservedStock;
 	}
-	
-	}
+}

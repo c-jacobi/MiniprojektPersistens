@@ -4,12 +4,12 @@ public class Equipment {
 
 	private String material;
 	private String style;
-	
+
 	public Equipment (String material, String style) {
-	this.material = material;
-	this.style = style;
-	
-}
+		super();
+		this.material = material;
+		this.style = style;
+	}
 
 	public String getMaterial() {
 		return material;
@@ -26,6 +26,4 @@ public class Equipment {
 	public void setStyle(String style) {
 		this.style = style;
 	}
-	
-	
 }
