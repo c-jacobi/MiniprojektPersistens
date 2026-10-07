@@ -13,13 +13,13 @@ public class CustomerDB implements CustomerDAO {
 	private static final String FIND_BY_PHONE = SELECT_ALL_Q + " where phoneno = ?";
 	private static final String FIND_BY_EMAIL = SELECT_ALL_Q + " where email = ?";
 
-	private PreparedStatement selectAll;
+	private PreparedStatement findAll;
 	private PreparedStatement findByPhone;
 	private PreparedStatement findByEmail;
 
 	public CustomerDB() throws DataAccessException {
 		try {
-			selectAll = DBConnection.getInstance().getConnection().prepareStatement(SELECT_ALL_Q);
+			findAll = DBConnection.getInstance().getConnection().prepareStatement(SELECT_ALL_Q);
 			findByPhone = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_PHONE);
 			findByEmail = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_EMAIL);
 		} catch (SQLException e) {
@@ -30,7 +30,7 @@ public class CustomerDB implements CustomerDAO {
 	@Override
 	public List<Customer> findAll() throws DataAccessException {
 		try {
-			ResultSet rs = selectAll.executeQuery();
+			ResultSet rs = findAll.executeQuery();
 			List<Customer> res = buildObjects(rs);
 			return res;
 		} catch (SQLException e) {
