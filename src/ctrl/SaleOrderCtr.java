@@ -2,35 +2,25 @@ package ctrl;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Order;
-
 import db.DataAccessException;
+import db.SaleOrderDB;
+import model.SaleOrder;
 
-public class SaleOrderCtr implements SaleOrderCtrIF{
+public class SaleOrderCtr implements SaleOrderCtrIF {
+	private SaleOrderDB saleOrderDB;
 
-	@Override
-	public List<Order> findAll() throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
+	public SaleOrderCtr() throws DataAccessException {
+		this.saleOrderDB = new SaleOrderDB();
 	}
 
 	@Override
-	public Order findByOrderNo(int orderNo) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<SaleOrder> findAll() throws DataAccessException {
+		return saleOrderDB.findAll();
 	}
 
 	@Override
-	public Order findByPhone(String phone) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
+	public SaleOrder findByOrderNo(int orderNo) throws DataAccessException {
+		return saleOrderDB.findByOrderNo(orderNo);
 	}
-
-	@Override
-	public Order findEmail(String email) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 
 }

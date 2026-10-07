@@ -2,16 +2,13 @@ package ctrl;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Order;
 
 import db.DataAccessException;
+import model.SaleOrder;
 
 public interface SaleOrderCtrIF {
-	List<Order> findAll() throws DataAccessException;
+	List<SaleOrder> findAll() throws DataAccessException;
 
-	Order findByOrderNo(int orderNo) throws DataAccessException;
+	SaleOrder findByOrderNo(int orderNo) throws DataAccessException;
 	
-	Order findByPhone(String phone) throws DataAccessException;
-	
-	Order findEmail(String email) throws DataAccessException; 
 }
