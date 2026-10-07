@@ -47,7 +47,7 @@ public class SaleOrder {
 		return deliveryDate;
 	}
 
-	public void setDeliveryTime(LocalDate deliveryDate) {
+	public void setDeliveryDate(LocalDate deliveryDate) {
 		this.deliveryDate = deliveryDate;
 	}
 
