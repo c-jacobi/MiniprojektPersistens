@@ -8,9 +8,9 @@ public class SaleOrder {
 	private LocalDate date;
 	private String deliveryStatus;
 	private LocalDate deliveryDate;
-	private int discountGiven;
+	private double discountGiven;
 
-	public SaleOrder(int orderNo, LocalDate date, String deliveryStatus, LocalDate deliveryDate, int discountGiven) {
+	public SaleOrder(int orderNo, LocalDate date, String deliveryStatus, LocalDate deliveryDate, double discountGiven) {
 		super();
 		this.orderNo = orderNo;
 		this.date = date;
@@ -51,11 +51,11 @@ public class SaleOrder {
 		this.deliveryDate = deliveryDate;
 	}
 
-	public int getDiscountGiven() {
+	public double getDiscountGiven() {
 		return discountGiven;
 	}
 
-	public void setDiscountGiven(int discountGiven) {
+	public void setDiscountGiven(double discountGiven) {
 		this.discountGiven = discountGiven;
 	}
 

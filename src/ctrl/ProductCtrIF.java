@@ -9,7 +9,7 @@ public interface ProductCtrIF {
 	
 	List<Product> findAll() throws DataAccessException;
 
-	Product findByProductNumber(int ProductNumber) throws DataAccessException;
+	Product findByProductNumber(int productNumber) throws DataAccessException;
 	
 	
 

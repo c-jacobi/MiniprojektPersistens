@@ -63,7 +63,7 @@ public class SaleOrderDB implements SaleOrderDAO {
 			if (rs.next()) {
 				s = new SaleOrder(rs.getInt("orderno"), rs.getDate("date").toLocalDate(),
 						rs.getString("deliveryStatus"), rs.getDate("deliveryDate").toLocalDate(),
-						rs.getInt("discountGiven"));
+						rs.getDouble("discountGiven"));
 			}
 		} catch (SQLException e) {
 			throw new DataAccessException("Could not read result set for sale orders.", e);

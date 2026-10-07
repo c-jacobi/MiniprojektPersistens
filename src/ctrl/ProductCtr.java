@@ -14,8 +14,8 @@ public class ProductCtr  implements ProductCtrIF{
 	}
 
 	@Override
-	public Product findByProductNumber(int ProductNumber) throws DataAccessException {
-		return productDB.findByProductNumber(ProductNumber);
+	public Product findByProductNumber(int productNumber) throws DataAccessException {
+		return productDB.findByProductNumber(productNumber);
 		
 	}
 

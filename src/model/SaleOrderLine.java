@@ -41,14 +41,5 @@ public class SaleOrderLine {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-
-	/**
-	 * To string converts the OrderLine class to String representation.
-	 *
-	 * @return the string
-	 */
-	@Override
-	public String toString() {
-		return product.getName() + " Quantity: " + quantity;
-	}
+	
 }
