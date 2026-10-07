@@ -12,12 +12,12 @@ public class ProductDB implements ProductDAO {
 	private static final String SELECT_ALL_Q = "select productNumber, name, minStock, reservedStock from products";
 	private static final String FIND_BY_PRODUCT_NUMBER = SELECT_ALL_Q + " where productNumber = ?";
 
-	private PreparedStatement selectAll;
+	private PreparedStatement findAll;
 	private PreparedStatement findByProductNumber;
 
 	public ProductDB() throws DataAccessException {
 		try {
-			selectAll = DBConnection.getInstance().getConnection().prepareStatement(SELECT_ALL_Q);
+			findAll = DBConnection.getInstance().getConnection().prepareStatement(SELECT_ALL_Q);
 			findByProductNumber = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_PRODUCT_NUMBER);
 		} catch (SQLException e) {
 			throw new DataAccessException("Could not prepare statements", e);
@@ -27,7 +27,7 @@ public class ProductDB implements ProductDAO {
 	@Override
 	public List<Product> findAll() throws DataAccessException {
 		try {
-			ResultSet rs = selectAll.executeQuery();
+			ResultSet rs = findAll.executeQuery();
 			List<Product> res = buildObjects(rs);
 			return res;
 		} catch (SQLException e) {
