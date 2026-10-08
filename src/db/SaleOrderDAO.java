@@ -4,5 +4,5 @@ import model.SaleOrder;
 
 public interface SaleOrderDAO {
 
-	SaleOrder saveOrder(int orderNo) throws DataAccessException;
+	SaleOrder saveOrder(SaleOrder order) throws DataAccessException;
 }

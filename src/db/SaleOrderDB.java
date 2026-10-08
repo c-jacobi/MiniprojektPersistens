@@ -1,16 +1,13 @@
 package db;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import model.SaleOrder;
 
 public class SaleOrderDB implements SaleOrderDAO {
-	private static final String SELECT_ALL_Q = "select orderno, date, deliveryStatus, deliveryDate, discountGiven from saleorders";
-	private static final String SAVE_ORDER = SELECT_ALL_Q + " "; // skal rettes
+	private static final String SAVE_ORDER = "insert into saleOrder (orderNo, date, deliveryStatus, deliveryDate, discountGiven) values (?, ?, ?, ?, ?)";
 
 	private PreparedStatement saveOrder;
 
@@ -23,9 +20,18 @@ public class SaleOrderDB implements SaleOrderDAO {
 	}
 
 	@Override
-	public SaleOrder saveOrder(int orderNo) throws DataAccessException { // skal laves
-		// TODO Auto-generated method stub
-		return null;
+	public SaleOrder saveOrder(SaleOrder order) throws DataAccessException { // skal laves
+		try {
+			saveOrder.setInt(1, order.getOrderNo());
+			saveOrder.setDate(2, Date.valueOf(order.getDate()));
+			saveOrder.setString(3, order.getDeliveryStatus());
+			saveOrder.setDate(4, Date.valueOf(order.getDeliveryDate()));
+			saveOrder.setDouble(5, order.getDiscountGiven());
+		} catch (SQLException e) {
+			throw new DataAccessException("order failed to save.", e);
+		}
+
+		return order;
 	}
 
 }
