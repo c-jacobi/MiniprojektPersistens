@@ -1,14 +1,14 @@
 package model;
 
 public class Freight {
-	private String metode;
+	private String method;
 	private boolean pickUp;
 	private double freeThreshold = 2500;
 	private Customer customer;
 	private double baseCost = 45;
 
-	public Freight(String metode, boolean pickUp, double freeThreshold) {
-		this.metode = metode;
+	public Freight(String method, boolean pickUp, double freeThreshold) {
+		this.method = method;
 		this.pickUp = pickUp;
 		this.freeThreshold = freeThreshold;
 

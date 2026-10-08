@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import model.Product;
 
 public class ProductDB implements ProductDAO {
-	private static final String SELECT_ALL_Q = "select productNumber, name, minStock, reservedStock from products";
-	private static final String FIND_BY_PRODUCT_NUMBER = SELECT_ALL_Q + " where productNumber = ?";
-	private static final String UPDATE_STOCK = SELECT_ALL_Q + FIND_BY_PRODUCT_NUMBER;
+	private static final String SELECT_ALL_Q = "select productNo, name, minStock, reservedStock, productType from product";
+	private static final String FIND_BY_PRODUCT_NUMBER = SELECT_ALL_Q + " where productNo = ?";
+	private static final String UPDATE_STOCK = "update product set reservedStock = ? where productNo = ?";
 
 	private PreparedStatement findByProductNumber;
 	private PreparedStatement updateStock;
@@ -24,9 +24,9 @@ public class ProductDB implements ProductDAO {
 	}
 
 	@Override
-	public Product findByProductNumber(int productNumber) throws DataAccessException {
+	public Product findByProductNumber(int productNo) throws DataAccessException {
 		try {
-			findByProductNumber.setInt(1, productNumber);
+			findByProductNumber.setInt(1, productNo);
 			ResultSet rs = findByProductNumber.executeQuery();
 			Product res = buildObject(rs);
 			return res;
@@ -36,10 +36,13 @@ public class ProductDB implements ProductDAO {
 	}
 
 	@Override
-	public void updateStock(Product p) throws DataAccessException { // skal laves
+	public void updateStock(Product p) throws DataAccessException {
 		final int rstock = p.getReservedStock();
+		final int prodNo = p.getProductNumber();
 		try {
-			updateStock.setInt(4, rstock);
+			updateStock.setInt(1, rstock);
+			updateStock.setInt(2, prodNo);
+			updateStock.executeUpdate();
 		} catch (SQLException e) {
 			throw new DataAccessException("Could not update reserved stock to:" + rstock, e);
 		}
@@ -59,8 +62,8 @@ public class ProductDB implements ProductDAO {
 		Product p = null;
 		try {
 			if (rs.next()) {
-				p = new Product(rs.getInt("productNumber"), rs.getString("name"), rs.getInt("minStock"),
-						rs.getInt("reservedStock"));
+				p = new Product(rs.getInt("productNo"), rs.getString("name"), rs.getInt("minStock"),
+						rs.getInt("reservedStock"), rs.getString("productType"));
 			}
 		} catch (SQLException e) {
 			throw new DataAccessException("Could not read result set for products.", e);
