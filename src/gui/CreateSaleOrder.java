@@ -72,8 +72,9 @@ public class CreateSaleOrder extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws DataAccessException 
 	 */
-	public CreateSaleOrder() {
+	public CreateSaleOrder() throws DataAccessException {
 		//saleOrderCtrIF = new SaleOrderCtrIF();
 		saleOrderCtr = new SaleOrderCtr();
 		saleOrderLines = new ArrayList<>();
