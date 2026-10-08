@@ -19,6 +19,7 @@ public class ProductDB implements ProductDAO {
 	public ProductDB() throws DataAccessException {
 		try {
 			findByProductNumber = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_PRODUCT_NUMBER);
+			updateStock = DBConnection.getInstance().getConnection().prepareStatement(UPDATE_STOCK);
 		} catch (SQLException e) {
 			throw new DataAccessException("Could not prepare statements", e);
 		}
@@ -37,9 +38,13 @@ public class ProductDB implements ProductDAO {
 	}
 
 	@Override
-	public Product updateStock() throws DataAccessException { // skal laves
-		// TODO Auto-generated method stub
-		return null;
+	public void updateStock(Product p) throws DataAccessException { // skal laves
+		final int rstock = p.getReservedStock();
+		try {
+			updateStock.setInt(4, rstock);
+		} catch (SQLException e) {
+			throw new DataAccessException("Could not update reserved stock to:" + rstock, e);
+		}
 	}
 
 //	private List<Product> buildObjects(ResultSet rs) throws DataAccessException {
