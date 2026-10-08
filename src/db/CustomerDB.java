@@ -9,32 +9,19 @@ import java.util.List;
 import model.Customer;
 
 public class CustomerDB implements CustomerDAO {
-	private static final String SELECT_ALL_Q = "select name, address, zipcode, city, email, phoneno, type from customers";
-	private static final String FIND_BY_PHONE = SELECT_ALL_Q + " where phoneno = ?";
+	private static final String SELECT_ALL_Q = "select customerId, name, address, zipCode, phoneNo, email, customerType from customers";
+	private static final String FIND_BY_PHONE = SELECT_ALL_Q + " where phoneNo = ?";
 	private static final String FIND_BY_EMAIL = SELECT_ALL_Q + " where email = ?";
 
-	private PreparedStatement findAll;
 	private PreparedStatement findByPhone;
 	private PreparedStatement findByEmail;
 
 	public CustomerDB() throws DataAccessException {
 		try {
-			findAll = DBConnection.getInstance().getConnection().prepareStatement(SELECT_ALL_Q);
 			findByPhone = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_PHONE);
 			findByEmail = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_EMAIL);
 		} catch (SQLException e) {
 			throw new DataAccessException("Could not prepare statements", e);
-		}
-	}
-
-	@Override
-	public List<Customer> findAll() throws DataAccessException {
-		try {
-			ResultSet rs = findAll.executeQuery();
-			List<Customer> res = buildObjects(rs);
-			return res;
-		} catch (SQLException e) {
-			throw new DataAccessException("Could not retrieve all customers.", e);
 		}
 	}
 
@@ -62,22 +49,12 @@ public class CustomerDB implements CustomerDAO {
 		}
 	}
 
-	private List<Customer> buildObjects(ResultSet rs) throws DataAccessException {
-		List<Customer> res = new ArrayList<>();
-		Customer c = buildObject(rs);
-		while (c != null) {
-			res.add(c);
-			c = buildObject(rs);
-		}
-		return res;
-	}
-
 	private Customer buildObject(ResultSet rs) throws DataAccessException {
 		Customer c = null;
 		try {
 			if (rs.next()) {
-				c = new Customer(rs.getInt("id"), rs.getString("name"), rs.getString("address"), rs.getInt("zipcode"),
-						rs.getString("city"), rs.getString("email"), rs.getString("phoneNo"),
+				c = new Customer(rs.getInt("customerId"), rs.getString("name"), rs.getString("address"),
+						rs.getInt("zipcode"), rs.getString("city"), rs.getString("email"), rs.getString("phoneNo"),
 						rs.getString("customerType"));
 			}
 		} catch (SQLException e) {

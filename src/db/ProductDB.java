@@ -11,27 +11,16 @@ import model.Product;
 public class ProductDB implements ProductDAO {
 	private static final String SELECT_ALL_Q = "select productNumber, name, minStock, reservedStock from products";
 	private static final String FIND_BY_PRODUCT_NUMBER = SELECT_ALL_Q + " where productNumber = ?";
+	private static final String UPDATE_STOCK = SELECT_ALL_Q + FIND_BY_PRODUCT_NUMBER;
 
-	private PreparedStatement findAll;
 	private PreparedStatement findByProductNumber;
+	private PreparedStatement updateStock;
 
 	public ProductDB() throws DataAccessException {
 		try {
-			findAll = DBConnection.getInstance().getConnection().prepareStatement(SELECT_ALL_Q);
 			findByProductNumber = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_PRODUCT_NUMBER);
 		} catch (SQLException e) {
 			throw new DataAccessException("Could not prepare statements", e);
-		}
-	}
-
-	@Override
-	public List<Product> findAll() throws DataAccessException {
-		try {
-			ResultSet rs = findAll.executeQuery();
-			List<Product> res = buildObjects(rs);
-			return res;
-		} catch (SQLException e) {
-			throw new DataAccessException("Could not retrieve all products.", e);
 		}
 	}
 
@@ -47,15 +36,21 @@ public class ProductDB implements ProductDAO {
 		}
 	}
 
-	private List<Product> buildObjects(ResultSet rs) throws DataAccessException {
-		List<Product> res = new ArrayList<>();
-		Product p = buildObject(rs);
-		while (p != null) {
-			res.add(p);
-			p = buildObject(rs);
-		}
-		return res;
+	@Override
+	public Product updateStock() throws DataAccessException { // skal laves
+		// TODO Auto-generated method stub
+		return null;
 	}
+
+//	private List<Product> buildObjects(ResultSet rs) throws DataAccessException {
+//		List<Product> res = new ArrayList<>();
+//		Product p = buildObject(rs);
+//		while (p != null) {
+//			res.add(p);
+//			p = buildObject(rs);
+//		}
+//		return res;
+//	}
 
 	private Product buildObject(ResultSet rs) throws DataAccessException {
 		Product p = null;
