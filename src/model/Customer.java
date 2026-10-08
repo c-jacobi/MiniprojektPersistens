@@ -6,7 +6,7 @@ public class Customer {
 	private int id;
 	private String name;
 	private String address;
-	private int zipcode;
+	private String zipCodeCity;
 	private String city;
 	private String email;
 	private String phone;
@@ -15,14 +15,13 @@ public class Customer {
 	
 	
 
-	public Customer(int id, String name, String address, int zipcode, String city, String email, String phoneNo, String customerType) {
+	public Customer(int id, String name, String address, String zipCodeCity, String phoneNo, String email, String customerType) {
 		this.id = id;
 		this.name = name;
 		this.address = address;
-		this.zipcode= zipcode;
-		this.city = city;
-		this.email = email;
+		this.zipCodeCity = zipCodeCity;
 		this.phone = phoneNo;
+		this.email = email;
 		this.customerType = customerType;
 		
 	}
@@ -51,8 +50,8 @@ public class Customer {
 
 
 
-	public int getZipcode() {
-		return zipcode;
+	public String getZipCodeCity() {
+		return zipCodeCity;
 	}
 
 
@@ -107,8 +106,8 @@ public class Customer {
 
 
 
-	public void setZipcode(int zipcode) {
-		this.zipcode = zipcode;
+	public void setZipcode(String zipCodeCity) {
+		this.zipCodeCity = zipCodeCity;
 	}
 
 
