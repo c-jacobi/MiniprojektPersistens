@@ -29,6 +29,16 @@ public class SaleOrder {
 		return totalPrice;
 	}
 
+	public double calculateDiscountedPrice(Customer customer) {
+		double originalPrice = priceNoDiscount();
+		double price = originalPrice;
+		if (customer.getCustomerType().equals("CLUB") && originalPrice >= 1500) {
+			price = originalPrice * 0.95;
+		}
+		discountGiven = originalPrice - price;
+		return price;
+	}
+
 	public int getOrderNo() {
 		return orderNo;
 	}
