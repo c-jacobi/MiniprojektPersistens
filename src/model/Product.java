@@ -7,12 +7,12 @@ public class Product {
 	private int minStock;
 	private int reservedStock;
 
-	public Product (int productNumber, String name, int minStock, int reservedStock) {
+	public Product(int productNumber, String name, int minStock, int reservedStock) {
 		super();
 		this.productNumber = productNumber;
 		this.name = name;
 		this.minStock = minStock;
-		this.reservedStock= reservedStock;
+		this.reservedStock = reservedStock;
 	}
 
 	public int getProductNumber() {

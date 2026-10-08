@@ -5,7 +5,7 @@ public class Equipment {
 	private String material;
 	private String style;
 
-	public Equipment (String material, String style) {
+	public Equipment(String material, String style) {
 		super();
 		this.material = material;
 		this.style = style;

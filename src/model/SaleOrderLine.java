@@ -8,7 +8,7 @@ public class SaleOrderLine {
 	/**
 	 * Instantiates a new order line.
 	 *
-	 * @param product the chosen product
+	 * @param product  the chosen product
 	 * @param quantity the quantity of the product
 	 */
 	public SaleOrderLine(Product product, int quantity) {
@@ -33,13 +33,14 @@ public class SaleOrderLine {
 	public int getQuantity() {
 		return quantity;
 	}
-	
+
 	/**
 	 * Sets the quantity.
+	 * 
 	 * @param quantity
 	 */
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	
+
 }

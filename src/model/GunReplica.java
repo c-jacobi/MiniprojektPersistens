@@ -5,7 +5,7 @@ public class GunReplica {
 	private String calibre;
 	private String material;
 
-	public GunReplica (String calibre, String material) {
+	public GunReplica(String calibre, String material) {
 		super();
 		this.calibre = calibre;
 		this.material = material;

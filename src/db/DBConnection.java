@@ -40,20 +40,19 @@ public class DBConnection {
 	public static synchronized DBConnection getInstance() throws DataAccessException {
 		if (dbConnection == null) {
 			dbConnection = new DBConnection();
-		} else { 
-	        Connection conn = dbConnection.getConnection();
-	        try {
-	            if (conn == null || conn.isClosed()) {
-	                dbConnection.connect(); // Reopen the connection if it's closed
-	            }
-	        } catch (SQLException e) {
-	            throw new DataAccessException("Failed to reopen the database connection.", e);
-	        }
+		} else {
+			Connection conn = dbConnection.getConnection();
+			try {
+				if (conn == null || conn.isClosed()) {
+					dbConnection.connect(); // Reopen the connection if it's closed
+				}
+			} catch (SQLException e) {
+				throw new DataAccessException("Failed to reopen the database connection.", e);
+			}
 		}
 		return dbConnection;
 	}
-	
-	
+
 	public Connection getConnection() {
 		return connection;
 	}
@@ -107,7 +106,8 @@ public class DBConnection {
 	}
 
 	public int executeInsertWithIdentity(String sql) throws SQLException {
-		//System.out.println("DBConnection, Inserting: " + sql); //just for debugging - remove
+		// System.out.println("DBConnection, Inserting: " + sql); //just for debugging -
+		// remove
 		int res = -1;
 		try (Statement s = connection.createStatement()) {
 			res = s.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
@@ -126,7 +126,8 @@ public class DBConnection {
 	}
 
 	public int executeUpdate(String sql) throws SQLException {
-		// System.out.println("DBConnection, Updating: " + sql); // just for debugging - remove
+		// System.out.println("DBConnection, Updating: " + sql); // just for debugging -
+		// remove
 		int res = -1;
 		try (Statement s = connection.createStatement()) {
 			res = s.executeUpdate(sql);
@@ -136,6 +137,5 @@ public class DBConnection {
 		}
 		return res;
 	}
-
 
 }
