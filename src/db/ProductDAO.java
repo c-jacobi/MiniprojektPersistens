@@ -5,6 +5,6 @@ import model.Product;
 public interface ProductDAO {
 	Product findByProductNumber(int productNumber) throws DataAccessException;
 
-	Product updateStock() throws DataAccessException;
+	void updateStock(Product p) throws DataAccessException;
 
 }
