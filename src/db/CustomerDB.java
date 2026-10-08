@@ -10,14 +10,17 @@ import model.Customer;
 
 public class CustomerDB implements CustomerDAO {
 	private static final String SELECT_ALL_Q = "select customerId, name, address, zipCodeCity, phoneNo, email, customerType from customer";
+	private static final String FIND_BY_ID = SELECT_ALL_Q + " where customerId = ?";
 	private static final String FIND_BY_PHONE = SELECT_ALL_Q + " where phoneNo = ?";
 	private static final String FIND_BY_EMAIL = SELECT_ALL_Q + " where email = ?";
-
+	
+	private PreparedStatement findById;
 	private PreparedStatement findByPhone;
 	private PreparedStatement findByEmail;
 
 	public CustomerDB() throws DataAccessException {
 		try {
+			findById = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_ID);
 			findByPhone = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_PHONE);
 			findByEmail = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_EMAIL);
 		} catch (SQLException e) {
@@ -25,6 +28,18 @@ public class CustomerDB implements CustomerDAO {
 		}
 	}
 
+	@Override
+	public Customer findById(int id) throws DataAccessException {
+		try {
+			findById.setInt(1, id);
+			ResultSet rs = findById.executeQuery();
+			Customer res = buildObject(rs);
+			return res;
+		} catch (SQLException e) {
+			throw new DataAccessException("Could not find customer by this id.", e);
+		}
+	}
+	
 	@Override
 	public Customer findByPhone(String phone) throws DataAccessException {
 		try {

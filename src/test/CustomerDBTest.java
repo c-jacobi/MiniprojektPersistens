@@ -26,6 +26,20 @@ class CustomerDBTest {
 	}
 
 	@Test
+	public void testFindById() throws DataAccessException {
+		int id = 1;
+		try {
+			Customer c = new CustomerDB().findById(id);
+			assertNotNull(c);
+			assertEquals(id, c.getId());
+		} catch (DataAccessException e) {
+			fail("Couldn't do findById on Customer");
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@Test
 	public void testFindByPhone() throws DataAccessException {
 		String phone = "723628362";
 		try {

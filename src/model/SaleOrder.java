@@ -10,16 +10,19 @@ public class SaleOrder {
 	private String deliveryStatus;
 	private LocalDate deliveryDate;
 	private double discountGiven;
+	private Customer customer;
 	private List<SaleOrderLine> saleOrderLines;
 
-	public SaleOrder(int orderNo, LocalDate date, String deliveryStatus, LocalDate deliveryDate, double discountGiven) {
+	public SaleOrder(int orderNo, LocalDate date, String deliveryStatus, LocalDate deliveryDate, double discountGiven, Customer customer) {
 		super();
 		this.orderNo = orderNo;
 		this.date = date;
 		this.deliveryStatus = deliveryStatus;
 		this.deliveryDate = deliveryDate;
 		this.discountGiven = discountGiven;
+		this.customer = customer;
 	}
+
 
 	public double priceNoDiscount() {
 		double totalPrice = 0.00;
@@ -77,6 +80,14 @@ public class SaleOrder {
 
 	public void setDiscountGiven(double discountGiven) {
 		this.discountGiven = discountGiven;
+	}
+	
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
 }
