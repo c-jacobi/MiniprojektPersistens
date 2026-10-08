@@ -7,12 +7,13 @@ import db.DataAccessException;
 
 public class DBCleanup {
 	public static void main(String[] args) throws SQLException, DataAccessException {
-		cleanDB(); // call to the utility class that resets the database
+		cleanDB();
 		System.out.println("cleaned");
 	}
 
 	public static void cleanDB() throws SQLException, DataAccessException {
-		e("delete from saleOrder where orderNo = 1112;");
+		e("delete from saleOrder where orderNo = 1112");
+		e("update product set reservedStock = 3 where productNo = 12345");
 	}
 
 	private static void e(String sql) throws SQLException, DataAccessException {

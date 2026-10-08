@@ -13,7 +13,7 @@ public class CustomerDB implements CustomerDAO {
 	private static final String FIND_BY_ID = SELECT_ALL_Q + " where customerId = ?";
 	private static final String FIND_BY_PHONE = SELECT_ALL_Q + " where phoneNo = ?";
 	private static final String FIND_BY_EMAIL = SELECT_ALL_Q + " where email = ?";
-	
+
 	private PreparedStatement findById;
 	private PreparedStatement findByPhone;
 	private PreparedStatement findByEmail;
@@ -39,7 +39,7 @@ public class CustomerDB implements CustomerDAO {
 			throw new DataAccessException("Could not find customer by this id.", e);
 		}
 	}
-	
+
 	@Override
 	public Customer findByPhone(String phone) throws DataAccessException {
 		try {
