@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class SaleOrder {
 
@@ -9,6 +10,7 @@ public class SaleOrder {
 	private String deliveryStatus;
 	private LocalDate deliveryDate;
 	private double discountGiven;
+	private List<SaleOrderLine> saleOrderLines;
 
 	public SaleOrder(int orderNo, LocalDate date, String deliveryStatus, LocalDate deliveryDate, double discountGiven) {
 		super();
@@ -17,6 +19,24 @@ public class SaleOrder {
 		this.deliveryStatus = deliveryStatus;
 		this.deliveryDate = deliveryDate;
 		this.discountGiven = discountGiven;
+	}
+
+	public double priceNoDiscount() {
+		double totalPrice = 0.00;
+		for (SaleOrderLine sol : saleOrderLines) {
+			totalPrice += 500.00 * sol.getQuantity();
+		}
+		return totalPrice;
+	}
+
+	public double calculateDiscountedPrice(Customer customer) {
+		double originalPrice = priceNoDiscount();
+		double price = originalPrice;
+		if (customer.getCustomerType().equals("CLUB") && originalPrice >= 1500) {
+			price = originalPrice * 0.95;
+		}
+		discountGiven = originalPrice - price;
+		return price;
 	}
 
 	public int getOrderNo() {
