@@ -1,7 +1,5 @@
 package ctrl;
 
-
-
 import db.DataAccessException;
 import db.CustomerDB;
 import model.Customer;
@@ -15,6 +13,11 @@ public class CustomerCtr implements CustomerCtrIF {
 	}
 
 	@Override
+	public Customer findById(int id) throws DataAccessException {
+		return customerDB.findById(id);
+	}
+
+	@Override
 	public Customer findByEmail(String email) throws DataAccessException {
 		return customerDB.findByEmail(email);
 	}
@@ -24,4 +27,5 @@ public class CustomerCtr implements CustomerCtrIF {
 		return customerDB.findByPhone(phone);
 
 	}
+
 }

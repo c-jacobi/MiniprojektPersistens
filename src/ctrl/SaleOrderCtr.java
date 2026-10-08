@@ -1,7 +1,5 @@
 package ctrl;
 
-import java.util.List;
-
 import db.DataAccessException;
 import db.SaleOrderDB;
 import model.SaleOrder;
@@ -14,15 +12,13 @@ public class SaleOrderCtr implements SaleOrderCtrIF {
 	}
 
 	@Override
-	public SaleOrder saveOrder(int orderNo) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
+	public SaleOrder findByOrderNo(int orderNo) throws DataAccessException {
+		return saleOrderDB.findByOrderNo(orderNo);
 	}
 
-	
-	
-
-	
+	@Override
+	public SaleOrder saveOrder(SaleOrder saleOrder) throws DataAccessException {
+		return saleOrderDB.saveOrder(saleOrder);
 	}
 
-
+}
