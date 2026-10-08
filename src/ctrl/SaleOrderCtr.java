@@ -14,13 +14,15 @@ public class SaleOrderCtr implements SaleOrderCtrIF {
 	}
 
 	@Override
-	public List<SaleOrder> findAll() throws DataAccessException {
-		return saleOrderDB.findAll();
+	public SaleOrder saveOrder(int orderNo) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	@Override
-	public SaleOrder findByOrderNo(int orderNo) throws DataAccessException {
-		return saleOrderDB.findByOrderNo(orderNo);
+	
+	
+
+	
 	}
 
-}
+

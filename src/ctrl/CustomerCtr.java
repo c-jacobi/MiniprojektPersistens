@@ -1,6 +1,6 @@
 package ctrl;
 
-import java.util.List;
+
 
 import db.DataAccessException;
 import db.CustomerDB;
@@ -12,11 +12,6 @@ public class CustomerCtr implements CustomerCtrIF {
 	public CustomerCtr() throws DataAccessException {
 		this.customerDB = new CustomerDB();
 
-	}
-
-	@Override
-	public List<Customer> findAll() throws DataAccessException {
-		return customerDB.findAll();
 	}
 
 	@Override
