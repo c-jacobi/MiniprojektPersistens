@@ -4,6 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import model.Clothing;
+import model.Equipment;
+import model.GunReplica;
 import model.Product;
 
 public class ProductDB implements ProductDAO {
@@ -62,8 +65,19 @@ public class ProductDB implements ProductDAO {
 		Product p = null;
 		try {
 			if (rs.next()) {
-				p = new Product(rs.getInt("productNo"), rs.getString("name"), rs.getInt("minStock"),
-						rs.getInt("reservedStock"), rs.getString("productType"));
+				if (rs.getString("productType").equals("Clothing")) {
+					p = new Clothing(rs.getInt("size"), rs.getString("colour"), rs.getInt("productNo"),
+							rs.getString("name"), rs.getInt("minStock"), rs.getInt("reservedStock"),
+							rs.getString("productType"));
+				} else if (rs.getString("productType").equals("Equipment")) {
+					p = new Equipment(rs.getString("material"), rs.getString("style"), rs.getInt("productNo"),
+							rs.getString("name"), rs.getInt("minStock"), rs.getInt("reservedStock"),
+							rs.getString("productType"));
+				} else if (rs.getString("productType").equals("GunReplica")) {
+					p = new GunReplica(rs.getInt("productNo"), rs.getString("name"), rs.getInt("minStock"),
+							rs.getInt("reservedStock"), rs.getString("productType"), rs.getString("caliber"),
+							rs.getString("material"));
+				}
 			}
 		} catch (SQLException e) {
 			throw new DataAccessException("Could not read result set for products.", e);
