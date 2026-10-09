@@ -3,11 +3,13 @@ package ctrl;
 import db.DataAccessException;
 import db.SaleOrderDB;
 import model.Customer;
+import model.Product;
 import model.SaleOrder;
 
 public class SaleOrderCtr implements SaleOrderCtrIF {
 	private SaleOrderDB saleOrderDB;
 	private CustomerCtr customerCtr;
+	private ProductCtr productCtr;
 
 	public SaleOrderCtr() throws DataAccessException {
 		this.saleOrderDB = new SaleOrderDB();
@@ -33,6 +35,10 @@ public class SaleOrderCtr implements SaleOrderCtrIF {
 
 	public Customer findCustomerByEmail(String email) throws DataAccessException {
 		return customerCtr.findByEmail(email);
+	}
+
+	public Product findProductByProductNo(int pNo) throws DataAccessException {
+		return productCtr.findByProductNumber(pNo);
 	}
 
 }
