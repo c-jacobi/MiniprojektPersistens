@@ -65,19 +65,8 @@ public class ProductDB implements ProductDAO {
 		Product p = null;
 		try {
 			if (rs.next()) {
-				if (rs.getString("productType").equals("Clothing")) {
-					p = new Clothing(rs.getInt("size"), rs.getString("colour"), rs.getInt("productNo"),
-							rs.getString("name"), rs.getInt("minStock"), rs.getInt("reservedStock"),
-							rs.getString("productType"));
-				} else if (rs.getString("productType").equals("Equipment")) {
-					p = new Equipment(rs.getString("material"), rs.getString("style"), rs.getInt("productNo"),
-							rs.getString("name"), rs.getInt("minStock"), rs.getInt("reservedStock"),
-							rs.getString("productType"));
-				} else if (rs.getString("productType").equals("GunReplica")) {
-					p = new GunReplica(rs.getInt("productNo"), rs.getString("name"), rs.getInt("minStock"),
-							rs.getInt("reservedStock"), rs.getString("productType"), rs.getString("caliber"),
-							rs.getString("material"));
-				}
+				p = new Product(rs.getInt("productNo"), rs.getString("name"), rs.getInt("minStock"),
+						rs.getInt("reservedStock"), rs.getString("productType"));
 			}
 		} catch (SQLException e) {
 			throw new DataAccessException("Could not read result set for products.", e);

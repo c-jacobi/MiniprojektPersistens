@@ -16,6 +16,8 @@ public class SaleOrderCtr implements SaleOrderCtrIF {
 
 	public SaleOrderCtr() throws DataAccessException {
 		this.saleOrderDB = new SaleOrderDB();
+		this.customerCtr = new CustomerCtr();
+		this.productCtr = new ProductCtr();
 	}
 
 	public SaleOrder createOrder() {
@@ -50,6 +52,7 @@ public class SaleOrderCtr implements SaleOrderCtrIF {
 		}
 	}
 
+	
 	@Override
 	public SaleOrder findByOrderNo(int orderNo) throws DataAccessException {
 		return saleOrderDB.findByOrderNo(orderNo);

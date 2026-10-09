@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -15,9 +16,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-import ctrl.*;
-import model.*;
-import db.*;
+import ctrl.SaleOrderCtr;
+import db.DataAccessException;
+import model.Customer;
+import model.Product;
+import model.SaleOrder;
+import model.SaleOrderLine;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -37,18 +41,11 @@ public class CreateSaleOrder extends JFrame {
 	private JTextField nameField;
 	private JTextField phoneField;
 	private JTextField typeField;
-	private JTextField addressField;
-	private JTextField zipCodeCityField;
-	private JTextField emailField;
 	private JTable table;
 	private DefaultTableModel tableModel;
-	private SaleOrderCtr saleOrderCtr;
-	private JCheckBox deliveryCheckBox;
-	private List<SaleOrderLine> saleOrderLines;
-	//private SaleOrderCtrIF saleOrderCtrIF;
-	private ProductCtr productCtr;
-	//private CreateSaleOrder customerDB;
-	private String productNumberStr;
+	private SaleOrderCtr orderCtrl;
+	private List<SaleOrderLine> orderLines;
+	private JTextField cvrField;
 
 	/**
 	 * Launch the application.
@@ -72,12 +69,10 @@ public class CreateSaleOrder extends JFrame {
 	 * @throws DataAccessException 
 	 */
 	public CreateSaleOrder() throws DataAccessException {
-		//saleOrderCtrIF = new SaleOrderCtrIF();
-		saleOrderCtr = new SaleOrderCtr();
-		saleOrderLines = new ArrayList<>();
-		//productCtr = new ProductCtr();
+		orderCtrl = new SaleOrderCtr();
+		orderLines = new ArrayList<>();
 
-		setTitle("Create Sale");
+		setTitle("Create Offer");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Exits window
 		setSize(1000, 700); // Window size
 		setLocationRelativeTo(null); // Window opens in center of the screen
@@ -100,11 +95,30 @@ public class CreateSaleOrder extends JFrame {
 		gbl_southPanel.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 		southPanel.setLayout(gbl_southPanel);
 
-		// Adds a product to the order
+		// Deletes the selected order line
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				deleteOrderLine();
+			}
+		});
+		GridBagConstraints gbc_btnDelete = new GridBagConstraints();
+		gbc_btnDelete.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnDelete.insets = new Insets(0, 0, 0, 5);
+		gbc_btnDelete.gridx = 2;
+		gbc_btnDelete.gridy = 0;
+		southPanel.add(btnDelete, gbc_btnDelete);
+
+		// Adds a product to the offer
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				addButtonClicked();
+				try {
+					addButtonClicked();
+				} catch (DataAccessException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		GridBagConstraints gbc_btnAdd = new GridBagConstraints();
@@ -113,6 +127,20 @@ public class CreateSaleOrder extends JFrame {
 		gbc_btnAdd.gridx = 0;
 		gbc_btnAdd.gridy = 0;
 		southPanel.add(btnAdd, gbc_btnAdd);
+
+		// Edits the selected order line
+		JButton btnEdite = new JButton("Edit");
+		btnEdite.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				editOrderLine();
+			}
+		});
+		GridBagConstraints gbc_btnEdite = new GridBagConstraints();
+		gbc_btnEdite.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnEdite.insets = new Insets(0, 0, 0, 5);
+		gbc_btnEdite.gridx = 1;
+		gbc_btnEdite.gridy = 0;
+		southPanel.add(btnEdite, gbc_btnEdite);
 
 		// Cancels the offer creation and closes the window
 		JButton btnCancel = new JButton("Cancel");
@@ -131,7 +159,12 @@ public class CreateSaleOrder extends JFrame {
 		JButton btnConfirm = new JButton("Confirm");
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				confirmButtonClicked();
+				try {
+					confirmButtonClicked();
+				} catch (DataAccessException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		GridBagConstraints gbc_btnConfirm = new GridBagConstraints();
@@ -183,11 +216,11 @@ public class CreateSaleOrder extends JFrame {
 		gbl_eastPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		eastPanel.setLayout(gbl_eastPanel);
 		eastPanel.setBorder(new EmptyBorder(10, 20, 10, 20)); //Adding empty space between content and frame
-		
+
 		// Customer ID input field
 		JLabel lblId = new JLabel("Customer ID:");
 		GridBagConstraints gbc_lblId = new GridBagConstraints();
-		gbc_lblId.anchor = GridBagConstraints.EAST;
+		gbc_lblId.anchor = GridBagConstraints.NORTHEAST;
 		gbc_lblId.insets = new Insets(0, 0, 5, 5);
 		gbc_lblId.gridx = 0;
 		gbc_lblId.gridy = 0;
@@ -201,37 +234,37 @@ public class CreateSaleOrder extends JFrame {
 		gbc_idField.gridy = 0;
 		eastPanel.add(idField, gbc_idField);
 		idField.setColumns(10);
-		
-		// Finds customer based on entered customer ID
-				JButton btnFind = new JButton("Find");
-				btnFind.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						try {
-							findButtonClicked();
-						} catch (DataAccessException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					}
-				});
-				GridBagConstraints gbc_btnFind = new GridBagConstraints();
-				gbc_btnFind.anchor = GridBagConstraints.EAST;
-				gbc_btnFind.insets = new Insets(0, 0, 5, 0);
-				gbc_btnFind.gridx = 1;
-				gbc_btnFind.gridy = 1;
-				eastPanel.add(btnFind, gbc_btnFind);
 
-		
-		// Customer Name input field
+		// Finds customer based on entered customer ID
+		JButton btnFind = new JButton("Find");
+		btnFind.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					findButtonClicked();
+				} catch (DataAccessException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		GridBagConstraints gbc_btnFind = new GridBagConstraints();
+		gbc_btnFind.anchor = GridBagConstraints.EAST;
+		gbc_btnFind.insets = new Insets(0, 0, 5, 0);
+		gbc_btnFind.gridx = 1;
+		gbc_btnFind.gridy = 1;
+		eastPanel.add(btnFind, gbc_btnFind);
+
+		// Displays name for private customers
 		JLabel lblName = new JLabel("Name:");
 		GridBagConstraints gbc_lblName = new GridBagConstraints();
-		gbc_lblName.anchor = GridBagConstraints.NORTHEAST;
 		gbc_lblName.insets = new Insets(0, 0, 5, 5);
+		gbc_lblName.anchor = GridBagConstraints.NORTHEAST;
 		gbc_lblName.gridx = 0;
 		gbc_lblName.gridy = 2;
 		eastPanel.add(lblName, gbc_lblName);
-		
+
 		nameField = new JTextField();
+		nameField.setEditable(false);// Field is filled automatically
 		GridBagConstraints gbc_nameField = new GridBagConstraints();
 		gbc_nameField.insets = new Insets(0, 0, 5, 0);
 		gbc_nameField.fill = GridBagConstraints.HORIZONTAL;
@@ -239,60 +272,25 @@ public class CreateSaleOrder extends JFrame {
 		gbc_nameField.gridy = 2;
 		eastPanel.add(nameField, gbc_nameField);
 		nameField.setColumns(10);
-		
-		// Address
-		JLabel lblAddress = new JLabel("Address:");
-		GridBagConstraints gbc_lblAddress = new GridBagConstraints();
-		gbc_lblAddress.anchor = GridBagConstraints.EAST;
-		gbc_lblAddress.insets = new Insets(0, 0, 5, 5);
-		gbc_lblAddress.gridx = 0;
-		gbc_lblAddress.gridy = 3;
-		eastPanel.add(lblAddress, gbc_lblAddress);
 
-		addressField = new JTextField();
-		GridBagConstraints gbc_addressField = new GridBagConstraints();
-		gbc_addressField.insets = new Insets(0, 0, 5, 0);
-		gbc_addressField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_addressField.gridx = 1;
-		gbc_addressField.gridy = 3;
-		eastPanel.add(addressField, gbc_addressField);
-		addressField.setColumns(10);
-		
-		//Zip / City
-		JLabel lblZipCodeCity = new JLabel("Zip/City:");
-		GridBagConstraints gbc_lblZipCodeCity = new GridBagConstraints();
-		gbc_lblZipCodeCity.anchor = GridBagConstraints.EAST;
-		gbc_lblZipCodeCity.insets = new Insets(0, 0, 5, 5);
-		gbc_lblZipCodeCity.gridx = 0;
-		gbc_lblZipCodeCity.gridy = 4;
-		eastPanel.add(lblZipCodeCity, gbc_lblZipCodeCity);
+		// Displays CVR number for commercial customers
+		JLabel lblCvr = new JLabel("Email:");
+		GridBagConstraints gbc_lblCvr = new GridBagConstraints();
+		gbc_lblCvr.anchor = GridBagConstraints.EAST;
+		gbc_lblCvr.insets = new Insets(0, 0, 5, 5);
+		gbc_lblCvr.gridx = 0;
+		gbc_lblCvr.gridy = 3;
+		eastPanel.add(lblCvr, gbc_lblCvr);
 
-		zipCodeCityField = new JTextField();
-		GridBagConstraints gbc_zipCodeCityField = new GridBagConstraints();
-		gbc_zipCodeCityField.insets = new Insets(0, 0, 5, 0);
-		gbc_zipCodeCityField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_zipCodeCityField.gridx = 1;
-		gbc_zipCodeCityField.gridy = 4;
-		eastPanel.add(zipCodeCityField, gbc_zipCodeCityField);
-		zipCodeCityField.setColumns(10);
-		
-		//Email
-		JLabel lblEmail = new JLabel("Email:");
-		GridBagConstraints gbc_lblEmail = new GridBagConstraints();
-		gbc_lblEmail.anchor = GridBagConstraints.EAST;
-		gbc_lblEmail.insets = new Insets(0, 0, 5, 5);
-		gbc_lblEmail.gridx = 0;
-		gbc_lblEmail.gridy = 5;
-		eastPanel.add(lblEmail, gbc_lblEmail);
-
-		emailField = new JTextField();
-		GridBagConstraints gbc_emailField = new GridBagConstraints();
-		gbc_emailField.insets = new Insets(0, 0, 5, 0);
-		gbc_emailField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_emailField.gridx = 1;
-		gbc_emailField.gridy = 5;
-		eastPanel.add(emailField, gbc_emailField);
-		emailField.setColumns(10);
+		cvrField = new JTextField();
+		cvrField.setEditable(false); // Field is filled automatically
+		GridBagConstraints gbc_cvrField = new GridBagConstraints();
+		gbc_cvrField.insets = new Insets(0, 0, 5, 0);
+		gbc_cvrField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_cvrField.gridx = 1;
+		gbc_cvrField.gridy = 3;
+		eastPanel.add(cvrField, gbc_cvrField);
+		cvrField.setColumns(10);
 
 		// Displays customer's phone number
 		JLabel lblPhone = new JLabel("Phone:");
@@ -300,16 +298,16 @@ public class CreateSaleOrder extends JFrame {
 		gbc_lblPhone.anchor = GridBagConstraints.EAST;
 		gbc_lblPhone.insets = new Insets(0, 0, 5, 5);
 		gbc_lblPhone.gridx = 0;
-		gbc_lblPhone.gridy = 6;
+		gbc_lblPhone.gridy = 4;
 		eastPanel.add(lblPhone, gbc_lblPhone);
 
 		phoneField = new JTextField();
-		phoneField.setEditable(true); // Field is filled automatically
+		phoneField.setEditable(false); // Field is filled automatically
 		GridBagConstraints gbc_phoneField = new GridBagConstraints();
 		gbc_phoneField.insets = new Insets(0, 0, 5, 0);
 		gbc_phoneField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_phoneField.gridx = 1;
-		gbc_phoneField.gridy = 6;
+		gbc_phoneField.gridy = 4;
 		eastPanel.add(phoneField, gbc_phoneField);
 		phoneField.setColumns(10);
 
@@ -319,34 +317,18 @@ public class CreateSaleOrder extends JFrame {
 		gbc_lblType.anchor = GridBagConstraints.EAST;
 		gbc_lblType.insets = new Insets(0, 0, 5, 5);
 		gbc_lblType.gridx = 0;
-		gbc_lblType.gridy = 7;
+		gbc_lblType.gridy = 5;
 		eastPanel.add(lblType, gbc_lblType);
 
 		typeField = new JTextField();
-		typeField.setEditable(true); // Field is filled automatically
+		typeField.setEditable(false); // Field is filled automatically
 		GridBagConstraints gbc_typeField = new GridBagConstraints();
 		gbc_typeField.insets = new Insets(0, 0, 5, 0);
 		gbc_typeField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_typeField.gridx = 1;
-		gbc_typeField.gridy = 7;
+		gbc_typeField.gridy = 5;
 		eastPanel.add(typeField, gbc_typeField);
 		typeField.setColumns(10);
-
-		// Checkbox for selecting pick-up as delivery method
-		JLabel lblIsPickup = new JLabel("Is Pick Up:");
-		GridBagConstraints gbc_lblIsPickup = new GridBagConstraints();
-		gbc_lblIsPickup.anchor = GridBagConstraints.EAST;
-		gbc_lblIsPickup.insets = new Insets(0, 0, 5, 5);
-		gbc_lblIsPickup.gridx = 0;
-		gbc_lblIsPickup.gridy = 8;
-		eastPanel.add(lblIsPickup, gbc_lblIsPickup);
-
-		deliveryCheckBox = new JCheckBox("");
-		GridBagConstraints gbc_deliveryCheckBox = new GridBagConstraints();
-		gbc_deliveryCheckBox.insets = new Insets(0, 0, 5, 0);
-		gbc_deliveryCheckBox.gridx = 1;
-		gbc_deliveryCheckBox.gridy = 8;
-		eastPanel.add(deliveryCheckBox, gbc_deliveryCheckBox);
 
 		// Scroll pane containing the product table
 		JScrollPane scrollPane = new JScrollPane();
@@ -364,112 +346,214 @@ public class CreateSaleOrder extends JFrame {
 		};
 		table.setModel(tableModel);
 	}
-	
+
+	/**
+	 * Finds a customer by customer ID and displays customer information.
+	 *
+	 * @return true if customer was found, otherwise false
+	 * @throws DataAccessException 
+	 */
 	private boolean findButtonClicked() throws DataAccessException {
-	    String id = idField.getText();
+		int customerID = Integer.parseInt(idField.getText());
+		Customer customer = orderCtrl.findCustomerById(customerID);
+		if (customer == null) {
+			JOptionPane.showMessageDialog(CreateSaleOrder.this, "Error. Customer not found.");
+			return false;
+		}
 
-	    Customer customer = saleOrderCtr.findCustomerByEmail(id);
+				// Shows different information depending on customer type
+			String name = customer.getName();
+			String email = customer.getEmail();
+			nameField.setText(name);
+			cvrField.setText(email);
+			typeField.setText("PRIVATE");
+		
 
-	    if (customer == null) {
-	        JOptionPane.showMessageDialog(this, "Error. Customer not found.");
-	        return false;
-	    }
-
-	    nameField.setText(customer.getName());
-	    phoneField.setText(customer.getPhone());
-	    typeField.setText(customer.getCustomerType());
-
-	    return true;
+		String phone = customer.getPhone();
+		phoneField.setText(phone);
+		return true;
 	}
 
 
 	/**
-	 * Adds a product to the offer based on product number and quantity.
+	 * Confirms and creates the offer if a customer and products are registered.
+	 * @throws DataAccessException 
 	 */
-	private void addButtonClicked() {
-		int productNumber = Integer.parseInt(productNumberStr);
-		Product product = null;
-		try {
-			product = productCtr.findByProductNumber(productNumber);
-		} catch (DataAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	private void confirmButtonClicked() throws DataAccessException {
+		SaleOrder order = orderCtrl.createOrder();
+
+		int customerID = Integer.parseInt(idField.getText());
+		Customer customer = orderCtrl.findCustomerById(customerID);
+
+		if (customer == null) {
+		    JOptionPane.showMessageDialog(CreateSaleOrder.this, "Error. Customer not found.");
+		    return;
 		}
-	    if (productNumberStr == null) {
-	        JOptionPane.showMessageDialog(this, "Error. No product found.");
-	        return;
-	    }
-	    if (product == null) {
-	        JOptionPane.showMessageDialog(this, "Error. No product found.");
-	        return;
-	    }
-	    String qtyStr = JOptionPane.showInputDialog(this, "Enter quantity:");
-	    if (qtyStr == null) {
-	        return;
-	    }
-	    int qty;
-	    try {
-	        qty = Integer.parseInt(qtyStr);
-	    } catch (NumberFormatException e) {
-	        JOptionPane.showMessageDialog(this, "Error. Quantity must be a number.");
-	        return;
-	    }
-	    if (qty <= 0) {
-	        JOptionPane.showMessageDialog(this, "Error. Type a valid quantity.");
-	        return;
-	    }	    
-	    SaleOrderLine existingLine = findOrderLine(product);
-	    if (existingLine != null) {
-	        // Produkt findes allerede på ordren
-	        int newQty = existingLine.getQuantity() + qty;
-	        existingLine.setQuantity(newQty);
-	        int rowIndex = saleOrderLines.indexOf(existingLine);
-	        tableModel.setValueAt(newQty, rowIndex, 1);
-	    } else {
-	        // Opret ny ordrelinje
-	        SaleOrderLine newLine = new SaleOrderLine(product, qty);
-	        saleOrderLines.add(newLine);
-	        tableModel.addRow(new Object[] {
-	                product.getProductNumber(),
-	                qty         
-	        });
-	    }
-	}
-	
-	private void confirmButtonClicked() {
-		JOptionPane.showMessageDialog(this, "Order confirmed");
-		
+
+		order.setCustomer(customer);
+
+		for (SaleOrderLine line : orderLines) {
+		    order.addSaleOrderLine(line);
+		}
+
+		order.setDeliveryStatus("Placed");
+		order.setDate(LocalDate.now());
+		order.setDeliveryDate(LocalDate.now());
+
+		orderCtrl.placeOrder(order);
 		clear();
+
 	}
 	
+	/**
+	 * Adds a product to the offer based on product barcode and quantity.
+	 * @throws DataAccessException 
+	 */
+	private void addButtonClicked() throws DataAccessException {
+		int productNumber =  Integer.parseInt(JOptionPane.showInputDialog(this, "Enter product number:"));
+
+		Product product = orderCtrl.findProductByProductNo(productNumber);
+
+		if (product == null) {
+			JOptionPane.showMessageDialog(CreateSaleOrder.this, "Error. No product found.");
+			return;
+		}
+
+		int qty;
+		String qtyStr = JOptionPane.showInputDialog(this, "Enter quantity:");
+		if (qtyStr == null) {
+			return;
+		}
+
+		try {
+			qty = Integer.parseInt(qtyStr);
+		} catch (NumberFormatException n) {
+			JOptionPane.showMessageDialog(CreateSaleOrder.this, "Error. Quantity must be a number.");
+			return;
+		}
+
+		if (qty <= 0) {
+			JOptionPane.showMessageDialog(CreateSaleOrder.this, "Error. Type a valid quantity.");
+			return;
+		}
+
+		SaleOrderLine existingLine = findOrderLine(product);
+
+		if (existingLine != null) {
+			// Product exists
+
+			// Calculate new quantity
+			int newQty = existingLine.getQuantity() + qty;
+			existingLine.setQuantity(newQty);
+
+			// Get row index of the existing orderline
+			int rowIndex = orderLines.indexOf(existingLine);
+
+			// set new quantity value in table
+			tableModel.setValueAt(newQty, rowIndex, 1);
+
+		} else {
+			// Product has not previously been added
+
+			// Create new orderline
+			SaleOrderLine newLine = new SaleOrderLine(product, qty);
+			// Add orderline to list of orderlines
+			orderLines.add(newLine);
+
+			// Add orderline to table
+			tableModel.addRow(new Object[] { product.getName(), qty});
+		}
+	}
 	
+	/**
+	 * Finds an existing order line for a specific product.
+	 *
+	 * @param product the product to search for
+	 * @return the matching order line, or null if not found
+	 */
 	private SaleOrderLine findOrderLine(Product product) {
-		for (SaleOrderLine ol : saleOrderLines) {
+		for (SaleOrderLine ol : orderLines) {
 			if (ol.getProduct().equals(product)) {
 				return ol;
 			}
 		}
 		return null;
 	}
+	
+	/**
+	 * Deletes the selected order line from both list and table.
+	 */
+	private void deleteOrderLine() {
+		int rowIndex = table.getSelectedRow();
 
+		if (rowIndex == -1) {
+			JOptionPane.showMessageDialog(this, "Please select an item from the list to delete.");
+			return;
+		}
+		int choice = JOptionPane.showConfirmDialog(CreateSaleOrder.this, "Are you sure you want to delete this item?",
+				"Delete Item", JOptionPane.YES_NO_OPTION);
+		if (choice == JOptionPane.YES_OPTION) {
+			orderLines.remove(rowIndex);
+			tableModel.removeRow(rowIndex);
+		}
+	}
 
+	/**
+	 * Edits the quantity of the selected order line.
+	 */
+	private void editOrderLine() {
+		int rowIndex = table.getSelectedRow();
+
+		if (rowIndex == -1) {
+			JOptionPane.showMessageDialog(this, "Please select an item from the list to edit.");
+			return;
+		}
+
+		SaleOrderLine orderLine = orderLines.get(rowIndex);
+
+		String qtyStr = JOptionPane.showInputDialog(this, "Enter new quantity: ", orderLine.getQuantity());
+
+		if (qtyStr == null) {
+			return; // When cancel is clicked for example
+		}
+
+		try {
+			int newQty = Integer.parseInt(qtyStr);
+
+			if (newQty <= 0) {
+				JOptionPane.showMessageDialog(this, "Quantity must be greater than 0.");
+				return;
+			}
+
+			// Update quantity in OrderLine
+			orderLine.setQuantity(newQty);
+
+			// Update quantity in Table
+			tableModel.setValueAt(newQty, rowIndex, 1);
+
+		} catch (NumberFormatException n) {
+			JOptionPane.showMessageDialog(this, "Quantity must be a number.");
+		}
+	}
+
+	/**
+	 * Cancels offer creation and closes the window.
+	 */
 	private void cancelClicked() {
 		this.dispose();
 		this.setVisible(false);
 	}
-	
+
 	/**
 	 * Clears all input fields, order lines and table rows.
 	 */
 	private void clear() {
 		idField.setText("");
 		nameField.setText("");
-		addressField.setText("");
-		//zipCodeCity = zipCodeCity("");
+		cvrField.setText("");
 		phoneField.setText("");
-		//customerTypeField.setText("");
-		deliveryCheckBox.setSelected(false);
-		saleOrderLines.clear();
+		typeField.setText("");
+		orderLines.clear();
 		tableModel.setRowCount(0);
 	}
 }
