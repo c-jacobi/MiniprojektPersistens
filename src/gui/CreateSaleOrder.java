@@ -47,7 +47,6 @@ public class CreateSaleOrder extends JFrame {
 	private List<SaleOrderLine> saleOrderLines;
 	//private SaleOrderCtrIF saleOrderCtrIF;
 	private ProductCtr productCtr;
-	private int productNumber;
 	//private CreateSaleOrder customerDB;
 	private String productNumberStr;
 
@@ -207,7 +206,12 @@ public class CreateSaleOrder extends JFrame {
 				JButton btnFind = new JButton("Find");
 				btnFind.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						findButtonClicked();
+						try {
+							findButtonClicked();
+						} catch (DataAccessException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
 				});
 				GridBagConstraints gbc_btnFind = new GridBagConstraints();
@@ -361,10 +365,10 @@ public class CreateSaleOrder extends JFrame {
 		table.setModel(tableModel);
 	}
 	
-	private boolean findButtonClicked() {
-	    int id = idField.getText();
+	private boolean findButtonClicked() throws DataAccessException {
+	    String id = idField.getText();
 
-	    Customer customer = saleOrderCtr.findCustomerById(id);
+	    Customer customer = saleOrderCtr.findCustomerByEmail(id);
 
 	    if (customer == null) {
 	        JOptionPane.showMessageDialog(this, "Error. Customer not found.");
@@ -434,7 +438,9 @@ public class CreateSaleOrder extends JFrame {
 	
 	private void confirmButtonClicked() {
 		JOptionPane.showMessageDialog(this, "Order confirmed");
-		}
+		
+		clear();
+	}
 	
 	
 	private SaleOrderLine findOrderLine(Product product) {
