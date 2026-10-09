@@ -5,6 +5,7 @@ import db.SaleOrderDB;
 import model.Customer;
 import model.Product;
 import model.SaleOrder;
+import model.SaleOrderLine;
 
 public class SaleOrderCtr implements SaleOrderCtrIF {
 	private SaleOrderDB saleOrderDB;
@@ -22,17 +23,6 @@ public class SaleOrderCtr implements SaleOrderCtrIF {
 		saleOrder = new SaleOrder(orderNumber, null, null, null, 0, null);
 		return saleOrder;
 	}
-	
-	
-	@Override
-	public SaleOrder findByOrderNo(int orderNo) throws DataAccessException {
-		return saleOrderDB.findByOrderNo(orderNo);
-	}
-
-	@Override
-	public SaleOrder saveOrder(SaleOrder saleOrder) throws DataAccessException {
-		return saleOrderDB.saveOrder(saleOrder);
-	}
 
 	public Customer findCustomerById(int id) throws DataAccessException {
 		return customerCtr.findById(id);
@@ -45,9 +35,31 @@ public class SaleOrderCtr implements SaleOrderCtrIF {
 	public Customer findCustomerByEmail(String email) throws DataAccessException {
 		return customerCtr.findByEmail(email);
 	}
-
+	
 	public Product findProductByProductNo(int pNo) throws DataAccessException {
 		return productCtr.findByProductNumber(pNo);
 	}
+
+	public void addSaleOrderLine(int productNumber, int qty) throws DataAccessException {
+		Product product = productCtr.findByProductNumber(productNumber);
+		if (product != null) {
+
+			SaleOrderLine ol = new SaleOrderLine(product, qty);
+
+			this.saleOrder.addSaleOrderLine(ol);
+		}
+	}
+
+	@Override
+	public SaleOrder findByOrderNo(int orderNo) throws DataAccessException {
+		return saleOrderDB.findByOrderNo(orderNo);
+	}
+
+	@Override
+	public SaleOrder placeOrder(SaleOrder saleOrder) throws DataAccessException {
+		return saleOrderDB.saveOrder(saleOrder);
+	}
+
+
 
 }

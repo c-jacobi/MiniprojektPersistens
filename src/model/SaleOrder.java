@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SaleOrder {
@@ -21,6 +22,7 @@ public class SaleOrder {
 		this.deliveryDate = deliveryDate;
 		this.discountGiven = discountGiven;
 		this.customer = customer;
+		this.saleOrderLines = new ArrayList<>();
 	}
 
 
@@ -88,6 +90,12 @@ public class SaleOrder {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+	
+	public void addSaleOrderLine(SaleOrderLine orderLine) {
+		if (orderLine != null) {
+			this.saleOrderLines.add(orderLine);
+		}
 	}
 
 }
