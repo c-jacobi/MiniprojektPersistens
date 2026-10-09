@@ -37,7 +37,7 @@ public class SaleOrderCtr implements SaleOrderCtrIF {
 	public Customer findCustomerByEmail(String email) throws DataAccessException {
 		return customerCtr.findByEmail(email);
 	}
-	
+
 	public Product findProductByProductNo(int pNo) throws DataAccessException {
 		return productCtr.findByProductNumber(pNo);
 	}
@@ -52,7 +52,6 @@ public class SaleOrderCtr implements SaleOrderCtrIF {
 		}
 	}
 
-	
 	@Override
 	public SaleOrder findByOrderNo(int orderNo) throws DataAccessException {
 		return saleOrderDB.findByOrderNo(orderNo);
@@ -62,7 +61,5 @@ public class SaleOrderCtr implements SaleOrderCtrIF {
 	public SaleOrder placeOrder(SaleOrder saleOrder) throws DataAccessException {
 		return saleOrderDB.saveOrder(saleOrder);
 	}
-
-
 
 }

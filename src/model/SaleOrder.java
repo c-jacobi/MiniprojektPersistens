@@ -14,7 +14,8 @@ public class SaleOrder {
 	private Customer customer;
 	private List<SaleOrderLine> saleOrderLines;
 
-	public SaleOrder(int orderNo, LocalDate date, String deliveryStatus, LocalDate deliveryDate, double discountGiven, Customer customer) {
+	public SaleOrder(int orderNo, LocalDate date, String deliveryStatus, LocalDate deliveryDate, double discountGiven,
+			Customer customer) {
 		super();
 		this.orderNo = orderNo;
 		this.date = date;
@@ -24,7 +25,6 @@ public class SaleOrder {
 		this.customer = customer;
 		this.saleOrderLines = new ArrayList<>();
 	}
-
 
 	public double priceNoDiscount() {
 		double totalPrice = 0.00;
@@ -83,7 +83,7 @@ public class SaleOrder {
 	public void setDiscountGiven(double discountGiven) {
 		this.discountGiven = discountGiven;
 	}
-	
+
 	public Customer getCustomer() {
 		return customer;
 	}
@@ -91,7 +91,7 @@ public class SaleOrder {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
-	
+
 	public void addSaleOrderLine(SaleOrderLine orderLine) {
 		if (orderLine != null) {
 			this.saleOrderLines.add(orderLine);

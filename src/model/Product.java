@@ -48,7 +48,7 @@ public class Product {
 	public void setReservedStock(int reservedStock) {
 		this.reservedStock = reservedStock;
 	}
-	
+
 	public String getProductType() {
 		return productType;
 	}

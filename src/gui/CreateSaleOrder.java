@@ -66,7 +66,8 @@ public class CreateSaleOrder extends JFrame {
 
 	/**
 	 * Create the frame.
-	 * @throws DataAccessException 
+	 * 
+	 * @throws DataAccessException
 	 */
 	public CreateSaleOrder() throws DataAccessException {
 		orderCtrl = new SaleOrderCtr();
@@ -82,13 +83,14 @@ public class CreateSaleOrder extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
-		contentPane.setBorder(new EmptyBorder(10, 20, 10, 20)); //Adding empty space between content and frame
+		contentPane.setBorder(new EmptyBorder(10, 20, 10, 20)); // Adding empty space between content and frame
 
 		// Bottom panel containing action buttons
 		JPanel southPanel = new JPanel();
 		contentPane.add(southPanel, BorderLayout.SOUTH);
-		
-		GridBagLayout gbl_southPanel = new GridBagLayout(); // GridBagLayout is used to place buttons in specific positions
+
+		GridBagLayout gbl_southPanel = new GridBagLayout(); // GridBagLayout is used to place buttons in specific
+															// positions
 		gbl_southPanel.columnWidths = new int[] { 70, 70, 70, 275, 50, 0, 0 };
 		gbl_southPanel.rowHeights = new int[] { 31, 0 };
 		gbl_southPanel.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
@@ -175,19 +177,19 @@ public class CreateSaleOrder extends JFrame {
 		// Top panel containing headings for product list and customer information
 		JPanel northPanel = new JPanel();
 		contentPane.add(northPanel, BorderLayout.NORTH);
-		
+
 		GridBagLayout gbl_northPanel = new GridBagLayout();
 		gbl_northPanel.columnWidths = new int[] { 50, 300, 0, 0 };
 		gbl_northPanel.rowHeights = new int[] { 21, 0 };
 		gbl_northPanel.columnWeights = new double[] { 0.0, 100.0, 0.0, Double.MIN_VALUE };
 		gbl_northPanel.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 		northPanel.setLayout(gbl_northPanel);
-		northPanel.setBorder(new EmptyBorder(10, 20, 10, 20)); //Adding empty space between content and frame
+		northPanel.setBorder(new EmptyBorder(10, 20, 10, 20)); // Adding empty space between content and frame
 
 		// Heading for product list
 		JLabel lblProductList = new JLabel("Product list:");
 		lblProductList.setFont(new Font("Arial", Font.BOLD, 14));
-		
+
 		GridBagConstraints gbc_lblProductList = new GridBagConstraints();
 		gbc_lblProductList.anchor = GridBagConstraints.WEST;
 		gbc_lblProductList.insets = new Insets(0, 0, 0, 5);
@@ -198,7 +200,7 @@ public class CreateSaleOrder extends JFrame {
 		// Heading for customer information
 		JLabel lblCustomerInfo = new JLabel("Customer info:");
 		lblCustomerInfo.setFont(new Font("Arial", Font.BOLD, 14));
-		
+
 		GridBagConstraints gbc_lblCustomerInfo = new GridBagConstraints();
 		gbc_lblCustomerInfo.anchor = GridBagConstraints.WEST;
 		gbc_lblCustomerInfo.gridx = 2;
@@ -208,14 +210,14 @@ public class CreateSaleOrder extends JFrame {
 		// Right panel containing customer fields
 		JPanel eastPanel = new JPanel();
 		contentPane.add(eastPanel, BorderLayout.EAST);
-		
+
 		GridBagLayout gbl_eastPanel = new GridBagLayout();
 		gbl_eastPanel.columnWidths = new int[] { 61, 61, 0 };
 		gbl_eastPanel.rowHeights = new int[] { 16, 0, 0, 0, 0, 0, 0, 0, 0 };
 		gbl_eastPanel.columnWeights = new double[] { 1.0, 1.0, Double.MIN_VALUE };
 		gbl_eastPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		eastPanel.setLayout(gbl_eastPanel);
-		eastPanel.setBorder(new EmptyBorder(10, 20, 10, 20)); //Adding empty space between content and frame
+		eastPanel.setBorder(new EmptyBorder(10, 20, 10, 20)); // Adding empty space between content and frame
 
 		// Customer ID input field
 		JLabel lblId = new JLabel("Customer ID:");
@@ -351,7 +353,7 @@ public class CreateSaleOrder extends JFrame {
 	 * Finds a customer by customer ID and displays customer information.
 	 *
 	 * @return true if customer was found, otherwise false
-	 * @throws DataAccessException 
+	 * @throws DataAccessException
 	 */
 	private boolean findButtonClicked() throws DataAccessException {
 		int customerID = Integer.parseInt(idField.getText());
@@ -361,23 +363,22 @@ public class CreateSaleOrder extends JFrame {
 			return false;
 		}
 
-				// Shows different information depending on customer type
-			String name = customer.getName();
-			String email = customer.getEmail();
-			nameField.setText(name);
-			cvrField.setText(email);
-			typeField.setText("PRIVATE");
-		
+		// Shows different information depending on customer type
+		String name = customer.getName();
+		String email = customer.getEmail();
+		nameField.setText(name);
+		cvrField.setText(email);
+		typeField.setText("PRIVATE");
 
 		String phone = customer.getPhone();
 		phoneField.setText(phone);
 		return true;
 	}
 
-
 	/**
 	 * Confirms and creates the offer if a customer and products are registered.
-	 * @throws DataAccessException 
+	 * 
+	 * @throws DataAccessException
 	 */
 	private void confirmButtonClicked() throws DataAccessException {
 		SaleOrder order = orderCtrl.createOrder();
@@ -386,14 +387,14 @@ public class CreateSaleOrder extends JFrame {
 		Customer customer = orderCtrl.findCustomerById(customerID);
 
 		if (customer == null) {
-		    JOptionPane.showMessageDialog(CreateSaleOrder.this, "Error. Customer not found.");
-		    return;
+			JOptionPane.showMessageDialog(CreateSaleOrder.this, "Error. Customer not found.");
+			return;
 		}
 
 		order.setCustomer(customer);
 
 		for (SaleOrderLine line : orderLines) {
-		    order.addSaleOrderLine(line);
+			order.addSaleOrderLine(line);
 		}
 
 		order.setDeliveryStatus("Placed");
@@ -404,13 +405,14 @@ public class CreateSaleOrder extends JFrame {
 		clear();
 
 	}
-	
+
 	/**
 	 * Adds a product to the offer based on product barcode and quantity.
-	 * @throws DataAccessException 
+	 * 
+	 * @throws DataAccessException
 	 */
 	private void addButtonClicked() throws DataAccessException {
-		int productNumber =  Integer.parseInt(JOptionPane.showInputDialog(this, "Enter product number:"));
+		int productNumber = Integer.parseInt(JOptionPane.showInputDialog(this, "Enter product number:"));
 
 		Product product = orderCtrl.findProductByProductNo(productNumber);
 
@@ -461,10 +463,10 @@ public class CreateSaleOrder extends JFrame {
 			orderLines.add(newLine);
 
 			// Add orderline to table
-			tableModel.addRow(new Object[] { product.getName(), qty});
+			tableModel.addRow(new Object[] { product.getName(), qty });
 		}
 	}
-	
+
 	/**
 	 * Finds an existing order line for a specific product.
 	 *
@@ -479,7 +481,7 @@ public class CreateSaleOrder extends JFrame {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Deletes the selected order line from both list and table.
 	 */

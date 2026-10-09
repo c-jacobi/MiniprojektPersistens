@@ -11,16 +11,15 @@ import java.sql.Connection;
 
 class DBConnectionTest {
 
-
 	@Test
 	public void testGetConnection() {
-			Connection c;
-			try {
-				c = DBConnection.getInstance().getConnection();
-				assertNotNull(c);
-			} catch (DataAccessException e) {
-				fail();
-			}
-			
+		Connection c;
+		try {
+			c = DBConnection.getInstance().getConnection();
+			assertNotNull(c);
+		} catch (DataAccessException e) {
+			fail();
+		}
+
 	}
 }

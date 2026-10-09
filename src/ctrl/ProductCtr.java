@@ -6,10 +6,10 @@ import model.Product;
 
 public class ProductCtr implements ProductCtrIF {
 	private ProductDB productDB;
-	
+
 	public ProductCtr() throws DataAccessException {
-        this.productDB = new ProductDB();
-    }
+		this.productDB = new ProductDB();
+	}
 
 	@Override
 	public Product findByProductNumber(int productNumber) throws DataAccessException {

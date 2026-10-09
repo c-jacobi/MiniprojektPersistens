@@ -17,12 +17,12 @@ class CustomerDBTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		
+
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
-		
+
 	}
 
 	@Test
@@ -37,8 +37,7 @@ class CustomerDBTest {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	@Test
 	public void testFindByPhone() throws DataAccessException {
 		String phone = "723628362";
@@ -51,7 +50,7 @@ class CustomerDBTest {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void testFindByEmail() throws DataAccessException {
 		String email = "oliver@hotmail.com";
