@@ -10,11 +10,20 @@ public class SaleOrderCtr implements SaleOrderCtrIF {
 	private SaleOrderDB saleOrderDB;
 	private CustomerCtr customerCtr;
 	private ProductCtr productCtr;
+	private SaleOrder saleOrder;
+	private int nextOrderNumber = 1003;
 
 	public SaleOrderCtr() throws DataAccessException {
 		this.saleOrderDB = new SaleOrderDB();
 	}
 
+	public SaleOrder createOrder() {
+		int orderNumber = nextOrderNumber++;
+		saleOrder = new SaleOrder(orderNumber, null, null, null, 0, null);
+		return saleOrder;
+	}
+	
+	
 	@Override
 	public SaleOrder findByOrderNo(int orderNo) throws DataAccessException {
 		return saleOrderDB.findByOrderNo(orderNo);
