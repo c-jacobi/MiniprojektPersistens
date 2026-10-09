@@ -12,7 +12,7 @@ public class SaleOrderCtr implements SaleOrderCtrIF {
 	private CustomerCtr customerCtr;
 	private ProductCtr productCtr;
 	private SaleOrder saleOrder;
-	private int nextOrderNumber = 1003;
+	private int nextOrderNumber = 1001;
 
 	public SaleOrderCtr() throws DataAccessException {
 		this.saleOrderDB = new SaleOrderDB();
