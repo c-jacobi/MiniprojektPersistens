@@ -350,29 +350,67 @@ public class CreateSaleOrder extends JFrame {
 	}
 
 	/**
-	 * Finds a customer by customer ID and displays customer information.
+	 * Finds a customer by customer ID, phone or email and displays customer information.
 	 *
 	 * @return true if customer was found, otherwise false
 	 * @throws DataAccessException
 	 */
 	private boolean findButtonClicked() throws DataAccessException {
-		int customerID = Integer.parseInt(idField.getText());
-		Customer customer = orderCtrl.findCustomerById(customerID);
+		String idString = idField.getText().trim();
+		String email = emailField.getText().trim();
+		String phone = phoneField.getText().trim();
+		
+		int filledFields = countFilledSearchFields();
+		
+		if(filledFields != 1) {
+			JOptionPane.showMessageDialog(this, "Fill out excetly one of these fields: ID, email or phone");
+			return false;
+		};
+		
+		Customer customer;
+		
+		if(!idText.isEmpty()) {
+			try {
+				int customerId = Integer.parseInt(idString);
+				customer = orderCtrl.findCustomerById(customerId);
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(this, "ID must be a number");
+				return false;
+			}
+		} else if (1email.isEmpty()) {
+			customer = orderCtrl.findCustomerByEmail(email);
+		} else {
+			customer = orderCtrl.findCustomerByPhone(phone);
+		}
+		
 		if (customer == null) {
-			JOptionPane.showMessageDialog(CreateSaleOrder.this, "Error. Customer not found.");
+			JOptionPane.showMessageDialog(this, "Customer not found");
 			return false;
 		}
-
-		// Shows different information depending on customer type
-		String name = customer.getName();
-		String email = customer.getEmail();
-		nameField.setText(name);
-		emailField.setText(email);
-		typeField.setText("PRIVATE");
-
-		String phone = customer.getPhone();
-		phoneField.setText(phone);
+		
+		idField.setText(String.valueOf(customer.getId()));
+		nameField.setText(customer.getName());
+		emailField.setText(customer.getEmail());
+		phoneField.setText(customer.getPhone());
+		typeField.setText(customer.getCustomerType());
+		
 		return true;
+	}
+
+	private int countFilledSearchFields() {
+		int count = 0;
+
+		if (!idField.getText().trim().isEmpty()) {
+			count++;
+		}
+		if (!emailField.getText().trim().isEmpty()) {
+			count++;
+		}
+		if (!phoneField.getText().trim().isEmpty()) {
+			count++;
+		}
+
+		return count;
 	}
 
 	/**
