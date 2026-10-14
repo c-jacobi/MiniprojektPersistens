@@ -285,7 +285,7 @@ public class CreateSaleOrder extends JFrame {
 		eastPanel.add(lblEmail, gbc_lblEmail);
 
 		emailField = new JTextField();
-		emailField.setEditable(false); // Field is filled automatically
+		emailField.setEditable(true); // Field is filled automatically
 		GridBagConstraints gbc_emailField = new GridBagConstraints();
 		gbc_emailField.insets = new Insets(0, 0, 5, 0);
 		gbc_emailField.fill = GridBagConstraints.HORIZONTAL;
@@ -304,7 +304,7 @@ public class CreateSaleOrder extends JFrame {
 		eastPanel.add(lblPhone, gbc_lblPhone);
 
 		phoneField = new JTextField();
-		phoneField.setEditable(false); // Field is filled automatically
+		phoneField.setEditable(true); // Field is filled automatically
 		GridBagConstraints gbc_phoneField = new GridBagConstraints();
 		gbc_phoneField.insets = new Insets(0, 0, 5, 0);
 		gbc_phoneField.fill = GridBagConstraints.HORIZONTAL;
