@@ -350,7 +350,8 @@ public class CreateSaleOrder extends JFrame {
 	}
 
 	/**
-	 * Finds a customer by customer ID, phone or email and displays customer information.
+	 * Finds a customer by customer ID, phone or email and displays customer
+	 * information.
 	 *
 	 * @return true if customer was found, otherwise false
 	 * @throws DataAccessException
@@ -359,17 +360,18 @@ public class CreateSaleOrder extends JFrame {
 		String idString = idField.getText().trim();
 		String email = emailField.getText().trim();
 		String phone = phoneField.getText().trim();
-		
+
 		int filledFields = countFilledSearchFields();
-		
-		if(filledFields != 1) {
+
+		if (filledFields != 1) {
 			JOptionPane.showMessageDialog(this, "Fill out excetly one of these fields: ID, email or phone");
 			return false;
-		};
-		
+		}
+		;
+
 		Customer customer;
-		
-		if(!idText.isEmpty()) {
+
+		if (!idString.isEmpty()) {
 			try {
 				int customerId = Integer.parseInt(idString);
 				customer = orderCtrl.findCustomerById(customerId);
@@ -377,23 +379,23 @@ public class CreateSaleOrder extends JFrame {
 				JOptionPane.showMessageDialog(this, "ID must be a number");
 				return false;
 			}
-		} else if (1email.isEmpty()) {
+		} else if (email.isEmpty()) {
 			customer = orderCtrl.findCustomerByEmail(email);
 		} else {
 			customer = orderCtrl.findCustomerByPhone(phone);
 		}
-		
+
 		if (customer == null) {
 			JOptionPane.showMessageDialog(this, "Customer not found");
 			return false;
 		}
-		
+
 		idField.setText(String.valueOf(customer.getId()));
 		nameField.setText(customer.getName());
 		emailField.setText(customer.getEmail());
 		phoneField.setText(customer.getPhone());
 		typeField.setText(customer.getCustomerType());
-		
+
 		return true;
 	}
 
