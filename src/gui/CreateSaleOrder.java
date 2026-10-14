@@ -45,7 +45,7 @@ public class CreateSaleOrder extends JFrame {
 	private DefaultTableModel tableModel;
 	private SaleOrderCtr orderCtrl;
 	private List<SaleOrderLine> orderLines;
-	private JTextField cvrField;
+	private JTextField emailField;
 
 	/**
 	 * Launch the application.
@@ -275,24 +275,24 @@ public class CreateSaleOrder extends JFrame {
 		eastPanel.add(nameField, gbc_nameField);
 		nameField.setColumns(10);
 
-		// Displays CVR number for commercial customers
-		JLabel lblCvr = new JLabel("Email:");
-		GridBagConstraints gbc_lblCvr = new GridBagConstraints();
-		gbc_lblCvr.anchor = GridBagConstraints.EAST;
-		gbc_lblCvr.insets = new Insets(0, 0, 5, 5);
-		gbc_lblCvr.gridx = 0;
-		gbc_lblCvr.gridy = 3;
-		eastPanel.add(lblCvr, gbc_lblCvr);
+		// Displays email for customers
+		JLabel lblEmail = new JLabel("Email:");
+		GridBagConstraints gbc_lblEmail = new GridBagConstraints();
+		gbc_lblEmail.anchor = GridBagConstraints.EAST;
+		gbc_lblEmail.insets = new Insets(0, 0, 5, 5);
+		gbc_lblEmail.gridx = 0;
+		gbc_lblEmail.gridy = 3;
+		eastPanel.add(lblEmail, gbc_lblEmail);
 
-		cvrField = new JTextField();
-		cvrField.setEditable(false); // Field is filled automatically
-		GridBagConstraints gbc_cvrField = new GridBagConstraints();
-		gbc_cvrField.insets = new Insets(0, 0, 5, 0);
-		gbc_cvrField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_cvrField.gridx = 1;
-		gbc_cvrField.gridy = 3;
-		eastPanel.add(cvrField, gbc_cvrField);
-		cvrField.setColumns(10);
+		emailField = new JTextField();
+		emailField.setEditable(false); // Field is filled automatically
+		GridBagConstraints gbc_emailField = new GridBagConstraints();
+		gbc_emailField.insets = new Insets(0, 0, 5, 0);
+		gbc_emailField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_emailField.gridx = 1;
+		gbc_emailField.gridy = 3;
+		eastPanel.add(emailField, gbc_emailField);
+		emailField.setColumns(10);
 
 		// Displays customer's phone number
 		JLabel lblPhone = new JLabel("Phone:");
@@ -367,7 +367,7 @@ public class CreateSaleOrder extends JFrame {
 		String name = customer.getName();
 		String email = customer.getEmail();
 		nameField.setText(name);
-		cvrField.setText(email);
+		emailField.setText(email);
 		typeField.setText("PRIVATE");
 
 		String phone = customer.getPhone();
@@ -552,7 +552,7 @@ public class CreateSaleOrder extends JFrame {
 	private void clear() {
 		idField.setText("");
 		nameField.setText("");
-		cvrField.setText("");
+		emailField.setText("");
 		phoneField.setText("");
 		typeField.setText("");
 		orderLines.clear();
