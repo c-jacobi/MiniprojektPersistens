@@ -475,7 +475,7 @@ public class CreateSaleOrder extends JFrame {
 	 */
 	private SaleOrderLine findOrderLine(Product product) {
 		for (SaleOrderLine ol : orderLines) {
-			if (ol.getProduct().equals(product)) {
+			if (ol.getProduct().getProductNumber() == product.getProductNumber()) {
 				return ol;
 			}
 		}
