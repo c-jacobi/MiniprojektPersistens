@@ -379,7 +379,7 @@ public class CreateSaleOrder extends JFrame {
 				JOptionPane.showMessageDialog(this, "ID must be a number");
 				return false;
 			}
-		} else if (email.isEmpty()) {
+		} else if (!email.isEmpty()) {
 			customer = orderCtrl.findCustomerByEmail(email);
 		} else {
 			customer = orderCtrl.findCustomerByPhone(phone);
