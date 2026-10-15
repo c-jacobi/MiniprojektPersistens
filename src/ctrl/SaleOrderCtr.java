@@ -20,8 +20,11 @@ public class SaleOrderCtr implements SaleOrderCtrIF {
 		this.productCtr = new ProductCtr();
 	}
 
-	public SaleOrder createOrder() {
+	public SaleOrder createOrder() throws DataAccessException {
 		int orderNumber = nextOrderNumber++;
+		while(saleOrderDB.findByOrderNo(orderNumber) != null) {
+			orderNumber++;
+		}
 		saleOrder = new SaleOrder(orderNumber, null, null, null, 0, null);
 		return saleOrder;
 	}

@@ -30,7 +30,6 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
-import javax.swing.JCheckBox;
 import java.awt.Font;
 
 public class CreateSaleOrder extends JFrame {
@@ -364,7 +363,7 @@ public class CreateSaleOrder extends JFrame {
 		int filledFields = countFilledSearchFields();
 
 		if (filledFields != 1) {
-			JOptionPane.showMessageDialog(this, "Fill out excetly one of these fields: ID, email or phone");
+			JOptionPane.showMessageDialog(this, "Fill out excetly one of these fields: ID, email or phone.");
 			return false;
 		}
 		;
@@ -376,7 +375,7 @@ public class CreateSaleOrder extends JFrame {
 				int customerId = Integer.parseInt(idString);
 				customer = orderCtrl.findCustomerById(customerId);
 			} catch (NumberFormatException e) {
-				JOptionPane.showMessageDialog(this, "ID must be a number");
+				JOptionPane.showMessageDialog(this, "ID must be a number.");
 				return false;
 			}
 		} else if (!email.isEmpty()) {
@@ -386,7 +385,7 @@ public class CreateSaleOrder extends JFrame {
 		}
 
 		if (customer == null) {
-			JOptionPane.showMessageDialog(this, "Customer not found");
+			JOptionPane.showMessageDialog(this, "Customer not found.");
 			return false;
 		}
 
@@ -421,28 +420,44 @@ public class CreateSaleOrder extends JFrame {
 	 * @throws DataAccessException
 	 */
 	private void confirmButtonClicked() throws DataAccessException {
-		SaleOrder order = orderCtrl.createOrder();
 
-		int customerID = Integer.parseInt(idField.getText());
-		Customer customer = orderCtrl.findCustomerById(customerID);
-
-		if (customer == null) {
-			JOptionPane.showMessageDialog(CreateSaleOrder.this, "Error. Customer not found.");
+		if (orderLines.isEmpty()) {
+			JOptionPane.showMessageDialog(CreateSaleOrder.this, "Error. No products registered.");
 			return;
 		}
 
-		order.setCustomer(customer);
-
-		for (SaleOrderLine line : orderLines) {
-			order.addSaleOrderLine(line);
+		try {
+			Integer.parseInt(idField.getText());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(this, "Invalid or empty input. Customer ID must be read to continue.");
+			return;
 		}
 
-		order.setDeliveryStatus("Placed");
-		order.setDate(LocalDate.now());
-		order.setDeliveryDate(LocalDate.now());
+		int choice = JOptionPane.showConfirmDialog(CreateSaleOrder.this, "You are about to create an offer. Proceed?.",
+				"Confirm Creation", JOptionPane.YES_NO_OPTION);
+		if (choice == JOptionPane.YES_OPTION) {
+			SaleOrder order = orderCtrl.createOrder();
+			int customerID = Integer.parseInt(idField.getText());
+			Customer customer = orderCtrl.findCustomerById(customerID);
 
-		orderCtrl.placeOrder(order);
-		clear();
+			if (customer == null) {
+				JOptionPane.showMessageDialog(CreateSaleOrder.this, "Error. Customer not found.");
+				return;
+			}
+
+			order.setCustomer(customer);
+
+			for (SaleOrderLine line : orderLines) {
+				order.addSaleOrderLine(line);
+			}
+
+			order.setDeliveryStatus("Pending");
+			order.setDate(LocalDate.now());
+			order.setDeliveryDate(LocalDate.now().plusDays(3));
+
+			orderCtrl.placeOrder(order);
+			clear();
+		}
 
 	}
 
