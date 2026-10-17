@@ -595,7 +595,7 @@ public class CreateSaleOrder extends JFrame {
 	/**
 	 * Clears all input fields, order lines and table rows.
 	 */
-	private void clear() {
+	private void clear() throws DataAccessException {
 		idField.setText("");
 		nameField.setText("");
 		emailField.setText("");
@@ -603,5 +603,6 @@ public class CreateSaleOrder extends JFrame {
 		typeField.setText("");
 		orderLines.clear();
 		tableModel.setRowCount(0);
+		orderCtrl.createOrder();
 	}
 }
