@@ -1,5 +1,7 @@
 package ctrl;
 
+import java.time.LocalDate;
+
 import db.DataAccessException;
 import db.SaleOrderDB;
 import model.Customer;
@@ -22,7 +24,7 @@ public class SaleOrderCtr implements SaleOrderCtrIF {
 
 	public SaleOrder createOrder() throws DataAccessException {
 		int orderNumber = nextOrderNumber++;
-		while(saleOrderDB.findByOrderNo(orderNumber) != null) {
+		while (saleOrderDB.findByOrderNo(orderNumber) != null) {
 			orderNumber++;
 		}
 		saleOrder = new SaleOrder(orderNumber, null, null, null, 0, null);
@@ -57,13 +59,24 @@ public class SaleOrderCtr implements SaleOrderCtrIF {
 	}
 
 	@Override
-	public SaleOrder findByOrderNo(int orderNo) throws DataAccessException {
-		return saleOrderDB.findByOrderNo(orderNo);
+	public boolean placeOrder(int customerId) throws DataAccessException {
+		Customer customer = customerCtr.findById(customerId);
+
+		if (customer == null) {
+			return false;
+		}
+
+		saleOrder.setCustomer(customer);
+		saleOrder.setDate(LocalDate.now());
+		saleOrder.setDeliveryStatus("Pending");
+		saleOrder.setDeliveryDate(LocalDate.now().plusDays(3));
+
+		saleOrderDB.saveOrder(saleOrder);
+		return true;
 	}
 
 	@Override
-	public SaleOrder placeOrder(SaleOrder saleOrder) throws DataAccessException {
-		return saleOrderDB.saveOrder(saleOrder);
+	public SaleOrder findByOrderNo(int orderNo) throws DataAccessException {
+		return saleOrderDB.findByOrderNo(orderNo);
 	}
-
 }
