@@ -70,6 +70,7 @@ public class CreateSaleOrder extends JFrame {
 	 */
 	public CreateSaleOrder() throws DataAccessException {
 		orderCtrl = new SaleOrderCtr();
+		orderCtrl.createOrder();
 		orderLines = new ArrayList<>();
 
 		setTitle("Create Offer");
@@ -436,26 +437,15 @@ public class CreateSaleOrder extends JFrame {
 		int choice = JOptionPane.showConfirmDialog(CreateSaleOrder.this, "You are about to create an offer. Proceed?.",
 				"Confirm Creation", JOptionPane.YES_NO_OPTION);
 		if (choice == JOptionPane.YES_OPTION) {
-			SaleOrder order = orderCtrl.createOrder();
-			int customerID = Integer.parseInt(idField.getText());
-			Customer customer = orderCtrl.findCustomerById(customerID);
+			int customerId = Integer.parseInt(idField.getText());
 
-			if (customer == null) {
-				JOptionPane.showMessageDialog(CreateSaleOrder.this, "Error. Customer not found.");
+			boolean placed = orderCtrl.placeOrder(customerId);
+
+			if (!placed) {
+				JOptionPane.showMessageDialog(CreateSaleOrder.this, "Error. Customer not found");
 				return;
 			}
 
-			order.setCustomer(customer);
-
-			for (SaleOrderLine line : orderLines) {
-				order.addSaleOrderLine(line);
-			}
-
-			order.setDeliveryStatus("Pending");
-			order.setDate(LocalDate.now());
-			order.setDeliveryDate(LocalDate.now().plusDays(3));
-
-			orderCtrl.placeOrder(order);
 			clear();
 		}
 
