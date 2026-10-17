@@ -7,6 +7,6 @@ public interface SaleOrderCtrIF {
 
 	SaleOrder findByOrderNo(int orderNo) throws DataAccessException;
 
-	SaleOrder placeOrder(SaleOrder order) throws DataAccessException;
+	boolean placeOrder(int customerId) throws DataAccessException;
 
 }
