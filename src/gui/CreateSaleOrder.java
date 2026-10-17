@@ -504,7 +504,7 @@ public class CreateSaleOrder extends JFrame {
 			int newQty = existingLine.getQuantity() + qty;
 			existingLine.setQuantity(newQty);
 
-			// Get row index of the existing orderline
+			// Get row index of the existing orderLine
 			int rowIndex = orderLines.indexOf(existingLine);
 
 			// set new quantity value in table
@@ -513,12 +513,12 @@ public class CreateSaleOrder extends JFrame {
 		} else {
 			// Product has not previously been added
 
-			// Create new orderline
+			// Create new orderLine
 			SaleOrderLine newLine = new SaleOrderLine(product, qty);
-			// Add orderline to list of orderlines
+			// Add orderLine to list of orderLines
 			orderLines.add(newLine);
 
-			// Add orderline to table
+			// Add orderLine to table
 			tableModel.addRow(new Object[] { product.getName(), qty });
 		}
 	}
