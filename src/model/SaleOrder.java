@@ -93,9 +93,18 @@ public class SaleOrder {
 	}
 
 	public void addSaleOrderLine(SaleOrderLine orderLine) {
-		if (orderLine != null) {
-			this.saleOrderLines.add(orderLine);
+		if (orderLine == null) {
+			return;
 		}
+
+		for (SaleOrderLine existingLine : saleOrderLines) {
+			if (existingLine.getProduct().getProductNumber() == orderLine.getProduct().getProductNumber()) {
+				existingLine.setQuantity(existingLine.getQuantity() + orderLine.getQuantity());
+				return;
+			}
+		}
+
+		saleOrderLines.add(orderLine);
 	}
 
 }

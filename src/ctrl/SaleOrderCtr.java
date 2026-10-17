@@ -47,12 +47,13 @@ public class SaleOrderCtr implements SaleOrderCtrIF {
 
 	public void addSaleOrderLine(int productNumber, int qty) throws DataAccessException {
 		Product product = productCtr.findByProductNumber(productNumber);
-		if (product != null) {
 
-			SaleOrderLine ol = new SaleOrderLine(product, qty);
-
-			this.saleOrder.addSaleOrderLine(ol);
+		if (product == null) {
+			return;
 		}
+
+		SaleOrderLine newLine = new SaleOrderLine(product, qty);
+		saleOrder.addSaleOrderLine(newLine);
 	}
 
 	@Override

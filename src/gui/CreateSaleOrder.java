@@ -494,6 +494,7 @@ public class CreateSaleOrder extends JFrame {
 			return;
 		}
 
+		orderCtrl.addSaleOrderLine(productNumber, qty);
 		SaleOrderLine existingLine = findOrderLine(product);
 
 		if (existingLine != null) {
